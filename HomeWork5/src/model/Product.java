@@ -5,6 +5,7 @@ public class Product {
 	private String productno;
 	private String productname;
 	private int price;
+	private String category;
 	private String status;
 	
 	public Product() {
@@ -12,11 +13,12 @@ public class Product {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Product(String productno, String productname, int price, String status) {
+	public Product(String productno, String productname, int price, String category, String status) {
 		super();
 		this.productno = productno;
 		this.productname = productname;
 		this.price = price;
+		this.category = category;
 		this.status = status;
 	}
 
@@ -50,6 +52,14 @@ public class Product {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getStatus() {
