@@ -153,4 +153,21 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	}
 
+	@Override
+	public String selectLastEmployeeno() {
+		String sql = "select max(employeeno) from employee";
+		String output = null;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				output = resultSet.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return output;
+	}
+
 }

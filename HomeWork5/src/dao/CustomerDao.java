@@ -11,6 +11,7 @@ public interface CustomerDao {
 	List<Customer> selectAll();
 	List<Customer> selectByUsername(String username);
 	List<Customer> selectByUsernameAndPassword(String username, String password);
+	String selectLastCustomerno();
 	//update
 	void update(Customer customer);
 	//delete
