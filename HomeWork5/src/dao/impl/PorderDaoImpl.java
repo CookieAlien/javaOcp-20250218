@@ -17,12 +17,13 @@ public class PorderDaoImpl implements PorderDao {
 	Connection connection = DBConnection.getConnection();
 	@Override
 	public void add(Porder order) {
-		String sql = "insert into porder(porderno,customerno,employeeno) values(?,?,?)";
+		String sql = "insert into porder(porderno,customerno,employeeno,totalprice) values(?,?,?,?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, order.getPorderno());
 			preparedStatement.setString(2, order.getCustomerno());
 			preparedStatement.setString(3, order.getEmployeeno());
+			preparedStatement.setInt(4, order.getTotalPrice());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -44,6 +45,7 @@ public class PorderDaoImpl implements PorderDao {
 				porder.setPorderno(resultSet.getString("porderno"));
 				porder.setCustomerno(resultSet.getString("customerno"));
 				porder.setEmployeeno(resultSet.getString("employeeno"));
+				porder.setTotalPrice(resultSet.getInt("totalprice"));
 				Timestamp timestamp = resultSet.getTimestamp("last_modified");
 				LocalDateTime dateTime = timestamp.toLocalDateTime();
 				porder.setLastModified(dateTime);
@@ -69,6 +71,7 @@ public class PorderDaoImpl implements PorderDao {
 				porder.setPorderno(resultSet.getString("porderno"));
 				porder.setCustomerno(resultSet.getString("customerno"));
 				porder.setEmployeeno(resultSet.getString("employeeno"));
+				porder.setTotalPrice(resultSet.getInt("totalprice"));
 				Timestamp timestamp = resultSet.getTimestamp("last_modified");
 				LocalDateTime dateTime = timestamp.toLocalDateTime();
 				porder.setLastModified(dateTime);
@@ -94,6 +97,7 @@ public class PorderDaoImpl implements PorderDao {
 				porder.setPorderno(resultSet.getString("porderno"));
 				porder.setCustomerno(resultSet.getString("customerno"));
 				porder.setEmployeeno(resultSet.getString("employeeno"));
+				porder.setTotalPrice(resultSet.getInt("totalprice"));
 				Timestamp timestamp = resultSet.getTimestamp("last_modified");
 				LocalDateTime dateTime = timestamp.toLocalDateTime();
 				porder.setLastModified(dateTime);
@@ -119,6 +123,7 @@ public class PorderDaoImpl implements PorderDao {
 				porder.setPorderno(resultSet.getString("porderno"));
 				porder.setCustomerno(resultSet.getString("customerno"));
 				porder.setEmployeeno(resultSet.getString("employeeno"));
+				porder.setTotalPrice(resultSet.getInt("totalprice"));
 				Timestamp timestamp = resultSet.getTimestamp("last_modified");
 				LocalDateTime dateTime = timestamp.toLocalDateTime();
 				porder.setLastModified(dateTime);
@@ -133,12 +138,13 @@ public class PorderDaoImpl implements PorderDao {
 
 	@Override
 	public void update(Porder order) {
-		String sql = "update porder set customerno=?,employeeno=? where porderno=?";
+		String sql = "update porder set customerno=?,employeeno=?,totalprice=? where porderno=?";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, order.getCustomerno());
 			preparedStatement.setString(2, order.getEmployeeno());
 			preparedStatement.setString(3, order.getPorderno());
+			preparedStatement.setInt(4, order.getTotalPrice());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

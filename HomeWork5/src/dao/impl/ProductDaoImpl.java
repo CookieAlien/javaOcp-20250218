@@ -111,5 +111,55 @@ public class ProductDaoImpl implements ProductDao{
 		}
 		
 	}
+
+	@Override
+	public List<Product> selectByStatus(String status) {
+		String sql= "select * from product where status=?";
+		List<Product> products = new ArrayList<Product>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, status);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Product product = new Product();
+				product.setId(resultSet.getInt("id"));
+				product.setProductno(resultSet.getString("productno"));
+				product.setProductname(resultSet.getString("productname"));
+				product.setPrice(resultSet.getInt("price"));
+				product.setCategory(resultSet.getString("category"));
+				product.setStatus(resultSet.getString("status"));
+				products.add(product);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return products;
+	}
+
+	@Override
+	public List<Product> selectByProductno(String productno) {
+		String sql= "select * from product where productno=?";
+		List<Product> products = new ArrayList<Product>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, productno);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Product product = new Product();
+				product.setId(resultSet.getInt("id"));
+				product.setProductno(resultSet.getString("productno"));
+				product.setProductname(resultSet.getString("productname"));
+				product.setPrice(resultSet.getInt("price"));
+				product.setCategory(resultSet.getString("category"));
+				product.setStatus(resultSet.getString("status"));
+				products.add(product);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return products;
+	}
 	
 }

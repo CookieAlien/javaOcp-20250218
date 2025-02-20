@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controller.customer.EmployeeMenuUI;
+import controller.employee.EmployeeMenuUI;
 import model.Employee;
 import service.impl.EmployeeServiceImpl;
 import util.FileTool;

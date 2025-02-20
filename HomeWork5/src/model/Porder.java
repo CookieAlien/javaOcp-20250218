@@ -7,16 +7,28 @@ public class Porder {
 	private String porderno;
 	private String customerno;
 	private String employeeno;
+	private int totalPrice;
 	private LocalDateTime lastModified;
 	public Porder() {
 		// TODO Auto-generated constructor stub
 	}
-	public Porder(String porderno, String customerno, String employeeno) {
+	
+	public Porder(String porderno, String customerno, String employeeno, int totalPrice) {
 		super();
 		this.porderno = porderno;
 		this.customerno = customerno;
 		this.employeeno = employeeno;
+		this.totalPrice = totalPrice;
 	}
+
+	public int getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(int totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 	public int getId() {
 		return id;
 	}

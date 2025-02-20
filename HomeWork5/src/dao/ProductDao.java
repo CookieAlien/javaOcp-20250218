@@ -9,7 +9,9 @@ public interface ProductDao {
 	void add(Product product);
 	//read
 	List<Product> selectAll();
+	List<Product> selectByProductno(String productno);
 	List<Product> selectByCategory(String category);
+	List<Product> selectByStatus(String status);
 	//update
 	void update(Product product);
 	//delete
