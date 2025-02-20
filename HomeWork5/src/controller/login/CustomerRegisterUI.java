@@ -4,10 +4,16 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
+import model.Customer;
+import service.impl.CustomerServiceImpl;
+import util.Helper;
 import util.TitlePanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -17,6 +23,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JPasswordField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CustomerRegisterUI extends JFrame {
 
@@ -29,6 +37,10 @@ public class CustomerRegisterUI extends JFrame {
 	private JTextField addressField;
 	private JTextField emailField;
 	private JTextField phoneField;
+	private JButton registerButton;
+	private Border defaultBorder = new JTextField().getBorder();
+	private Border errorBorder = new LineBorder(Color.red,2);
+	private static CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl();
 
 	/**
 	 * Launch the application.
@@ -75,6 +87,21 @@ public class CustomerRegisterUI extends JFrame {
 		contentPane.add(usernameLabel);
 		
 		usernameField = new JTextField();
+		usernameField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (Helper.validateUsername(usernameField.getText())) {
+					usernameField.setBorder(defaultBorder);
+				}else {
+					usernameField.setBorder(errorBorder);
+				}
+			}
+		});
+		usernameField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				passwordField.requestFocusInWindow();
+			}
+		});
 		usernameField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		usernameField.setBounds(108, 142, 146, 26);
 		contentPane.add(usernameField);
@@ -94,6 +121,21 @@ public class CustomerRegisterUI extends JFrame {
 		contentPane.add(passwordLabel);
 		
 		passwordField = new JPasswordField();
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (Helper.validatePassword(passwordField.getText())) {
+					passwordField.setBorder(defaultBorder);
+				}else {
+					passwordField.setBorder(errorBorder);
+				}
+			}
+		});
+		passwordField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				confirmField.requestFocusInWindow();
+			}
+		});
 		passwordField.setEchoChar('*');
 		passwordField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		passwordField.setColumns(10);
@@ -114,6 +156,21 @@ public class CustomerRegisterUI extends JFrame {
 		contentPane.add(confirmLabel);
 		
 		confirmField = new JPasswordField();
+		confirmField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (passwordField.getText().equals(confirmField.getText())) {
+					confirmField.setBorder(defaultBorder);
+				}else {
+					confirmField.setBorder(errorBorder);
+				}
+			}
+		});
+		confirmField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				nameField.requestFocusInWindow();
+			}
+		});
 		confirmField.setEchoChar('*');
 		confirmField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		confirmField.setColumns(10);
@@ -127,6 +184,21 @@ public class CustomerRegisterUI extends JFrame {
 		contentPane.add(nameLabel);
 		
 		nameField = new JTextField();
+		nameField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (Helper.validateName(nameField.getText())) {
+					nameField.setBorder(defaultBorder);
+				}else {
+					nameField.setBorder(errorBorder);
+				}
+			}
+		});
+		nameField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addressField.requestFocusInWindow();
+			}
+		});
 		nameField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		nameField.setColumns(10);
 		nameField.setBounds(108, 331, 146, 26);
@@ -146,6 +218,21 @@ public class CustomerRegisterUI extends JFrame {
 		contentPane.add(addressLabel);
 		
 		addressField = new JTextField();
+		addressField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (Helper.validateAddress(addressField.getText())) {
+					addressField.setBorder(defaultBorder);
+				}else {
+					addressField.setBorder(errorBorder);
+				}
+			}
+		});
+		addressField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				emailField.requestFocusInWindow();
+			}
+		});
 		addressField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		addressField.setColumns(10);
 		addressField.setBounds(108, 405, 301, 26);
@@ -165,6 +252,21 @@ public class CustomerRegisterUI extends JFrame {
 		contentPane.add(emailLabel);
 		
 		emailField = new JTextField();
+		emailField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (Helper.validateEmail(emailField.getText())) {
+					emailField.setBorder(defaultBorder);
+				} else {
+					emailField.setBorder(errorBorder);
+				}
+			}
+		});
+		emailField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				phoneField.requestFocusInWindow();
+			}
+		});
 		emailField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		emailField.setColumns(10);
 		emailField.setBounds(108, 479, 301, 26);
@@ -184,6 +286,16 @@ public class CustomerRegisterUI extends JFrame {
 		contentPane.add(phoneLabel);
 		
 		phoneField = new JTextField();
+		phoneField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (Helper.validatePhoneNumber(phoneField.getText())) {
+					phoneField.setBorder(defaultBorder);
+				} else {
+					phoneField.setBorder(errorBorder);
+				}
+			}
+		});
 		phoneField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		phoneField.setColumns(10);
 		phoneField.setBounds(108, 553, 146, 26);
@@ -196,7 +308,25 @@ public class CustomerRegisterUI extends JFrame {
 		phoneHintLabel.setBounds(51, 581, 375, 29);
 		contentPane.add(phoneHintLabel);
 		
-		JButton registerButton = new JButton("註冊");
+		registerButton = new JButton("註冊");
+		registerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (validateAll()) {
+					if (customerServiceImpl.isUsernameTaken(usernameField.getText())) {
+						JOptionPane.showMessageDialog(contentPane, "此帳號已被註冊！", "警告", JOptionPane.WARNING_MESSAGE);
+					} else {
+						String customerno = customerServiceImpl.generateCustomerno();
+						customerServiceImpl.register(new Customer(customerno, usernameField.getText(), passwordField.getText(), nameField.getText(), addressField.getText(), emailField.getText(), phoneField.getText()));
+						JOptionPane.showMessageDialog(contentPane, "註冊成功，將轉移至登入畫面");
+						new CustomerLoginUI().setVisible(true);
+						dispose();
+					}
+					
+				} else {
+					JOptionPane.showMessageDialog(contentPane, "輸入資料有格式錯誤！", "警告", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 		registerButton.setForeground(new Color(255, 255, 255));
 		registerButton.setBackground(new Color(0, 0, 200));
 		registerButton.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
@@ -242,5 +372,14 @@ public class CustomerRegisterUI extends JFrame {
 		showPasswordCheckBox_1.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		showPasswordCheckBox_1.setBounds(260, 269, 95, 23);
 		contentPane.add(showPasswordCheckBox_1);
+	}
+	private boolean validateAll() {
+		return Helper.validateUsername(usernameField.getText())
+			&& Helper.validatePassword(passwordField.getText())
+			&& passwordField.getText().equals(confirmField.getText())
+			&& Helper.validateName(nameField.getText())
+			&& Helper.validateAddress(addressField.getText())
+			&& Helper.validateEmail(emailField.getText())
+			&& Helper.validatePhoneNumber(phoneField.getText());
 	}
 }

@@ -6,8 +6,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.customer.CustomerMenuUI;
+import model.Customer;
+import service.impl.CustomerServiceImpl;
+import util.FileTool;
 import util.TitlePanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -24,6 +30,7 @@ public class CustomerLoginUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
+	private static CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl();
 
 	/**
 	 * Launch the application.
@@ -101,6 +108,18 @@ public class CustomerLoginUI extends JFrame {
 		contentPane.add(showPasswordCheckBox);
 		
 		JButton loginButton = new JButton("登入");
+		loginButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Customer customer = customerServiceImpl.login(usernameField.getText(), passwordField.getText());
+				if (customer != null) {
+					FileTool.save(customer, "Customer.txt");
+					new CustomerMenuUI().setVisible(true);
+					dispose();
+				} else {
+					JOptionPane.showMessageDialog(contentPane, "帳號或密碼錯誤！", "登入失敗", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		loginButton.setForeground(new Color(255, 255, 255));
 		loginButton.setBackground(new Color(0, 0, 200));
 		loginButton.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
