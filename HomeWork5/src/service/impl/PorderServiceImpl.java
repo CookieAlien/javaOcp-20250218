@@ -17,7 +17,7 @@ public class PorderServiceImpl implements PorderService {
 		if (porder.getTotalPrice()>0 && items.size()>0) {
 			porderDaoImpl.add(porder);
 			for (CartItem cartItem : items) {
-				OrderItem orderItem = new OrderItem(porder.getPorderno(), cartItem.getProductno(), cartItem.getAmount(),cartItem.getSum());
+				OrderItem orderItem = new OrderItem(porder.getPorderno(), cartItem.getProductno(),cartItem.getProductname(), cartItem.getAmount(),cartItem.getSum());
 				orderDetailDaoImpl.add(orderItem);
 			}
 		}

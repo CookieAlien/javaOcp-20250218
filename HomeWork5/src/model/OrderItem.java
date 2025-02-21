@@ -4,18 +4,22 @@ public class OrderItem {
 	private int orderDetailsID;
 	private String porderno;
 	private String productno;
+	private String productname;
 	private int amount;
 	private int sum;
 	public OrderItem() {
 		// TODO Auto-generated constructor stub
 	}
-	public OrderItem(String porderno, String productno, int amount, int sum) {
+	
+	public OrderItem(String porderno, String productno, String productname, int amount, int sum) {
 		super();
 		this.porderno = porderno;
 		this.productno = productno;
+		this.productname = productname;
 		this.amount = amount;
-		this.setSum(sum);
+		this.sum = sum;
 	}
+
 	public int getOrderDetailsID() {
 		return orderDetailsID;
 	}
@@ -45,6 +49,12 @@ public class OrderItem {
 	}
 	public void setSum(int sum) {
 		this.sum = sum;
+	}
+	public String getProductname() {
+		return productname;
+	}
+	public void setProductname(String productname) {
+		this.productname = productname;
 	}
 	
 	

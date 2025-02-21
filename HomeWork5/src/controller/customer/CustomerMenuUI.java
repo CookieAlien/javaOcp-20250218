@@ -77,6 +77,12 @@ public class CustomerMenuUI extends JFrame {
 		contentPane.add(shopButton);
 		
 		JButton viewButton = new JButton("我的訂單");
+		viewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ViewOrderUI().setVisible(true);
+				dispose();
+			}
+		});
 		viewButton.setForeground(Color.WHITE);
 		viewButton.setFont(new Font("微軟正黑體", Font.BOLD, 16));
 		viewButton.setBackground(new Color(0, 0, 0));

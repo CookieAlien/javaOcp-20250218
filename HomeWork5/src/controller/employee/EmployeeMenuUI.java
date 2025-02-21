@@ -90,6 +90,12 @@ public class EmployeeMenuUI extends JFrame {
 		contentPane.add(exitButton);
 		
 		JButton manageCusButton = new JButton("顧客管理");
+		manageCusButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ManageCustomerUI().setVisible(true);
+				dispose();
+			}
+		});
 		manageCusButton.setForeground(Color.WHITE);
 		manageCusButton.setFont(new Font("微軟正黑體", Font.BOLD, 16));
 		manageCusButton.setBackground(new Color(0, 0, 200));

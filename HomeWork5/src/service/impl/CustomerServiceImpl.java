@@ -60,4 +60,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 	}
 
+	@Override
+	public List<Customer> getAllCustomers() {
+		// TODO Auto-generated method stub
+		return customerDaoImpl.selectAll();
+	}
+
 }

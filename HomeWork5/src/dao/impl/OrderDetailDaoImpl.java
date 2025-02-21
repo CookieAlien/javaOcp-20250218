@@ -15,13 +15,14 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 	Connection connection = DBConnection.getConnection();
 	@Override
 	public void add(OrderItem item) {
-		String sql = "insert into orderdetails(porderno,productno,amount,sum) values(?,?,?,?)";
+		String sql = "insert into orderdetails(porderno,productno,productname,amount,sum) values(?,?,?,?,?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, item.getPorderno());
 			preparedStatement.setString(2, item.getProductno());
-			preparedStatement.setInt(3, item.getAmount());
-			preparedStatement.setInt(4, item.getSum());
+			preparedStatement.setString(3, item.getProductname());
+			preparedStatement.setInt(4, item.getAmount());
+			preparedStatement.setInt(5, item.getSum());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -55,7 +56,7 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 
 	@Override
 	public List<OrderItem> selectByOrder(String orderno) {
-		String sql = "select * from orderdetails where orderno=?";
+		String sql = "select * from orderdetails where porderno=?";
 		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		try {
 			PreparedStatement preparedStatement =connection.prepareStatement(sql);
@@ -66,6 +67,7 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 				item.setOrderDetailsID(resultSet.getInt("orderdetailid"));
 				item.setPorderno(resultSet.getString("porderno"));
 				item.setProductno(resultSet.getString("productno"));
+				item.setProductname(resultSet.getString("productname"));
 				item.setAmount(resultSet.getInt("amount"));
 				item.setSum(resultSet.getInt("sum"));
 				orderItems.add(item);
@@ -90,6 +92,7 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 				item.setOrderDetailsID(resultSet.getInt("orderdetailid"));
 				item.setPorderno(resultSet.getString("porderno"));
 				item.setProductno(resultSet.getString("productno"));
+				item.setProductname(resultSet.getString("productname"));
 				item.setAmount(resultSet.getInt("amount"));
 				item.setSum(resultSet.getInt("sum"));
 				orderItems.add(item);

@@ -60,7 +60,7 @@ public class PorderDaoImpl implements PorderDao {
 
 	@Override
 	public List<Porder> selectByCustomer(String customerno) {
-		String sql = "select * from porder where costomerno=?";
+		String sql = "select * from porder where customerno=?";
 		List<Porder> orders = new ArrayList<Porder>();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
