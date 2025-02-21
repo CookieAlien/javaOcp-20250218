@@ -55,9 +55,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void deleteEmployee(String employeeno) {
 		if (employeeno.matches("e[0-9]{3}")) {
-			employeeDaoImpl.delete(employeeno);
+			if (!employeeno.equals("e001")) {
+				employeeDaoImpl.delete(employeeno);
+			}
 		}
 
+	}
+
+	@Override
+	public List<Employee> getAllEmployees() {
+		// TODO Auto-generated method stub
+		return employeeDaoImpl.selectAll();
 	}
 
 }
