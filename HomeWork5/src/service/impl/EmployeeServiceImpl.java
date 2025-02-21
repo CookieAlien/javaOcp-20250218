@@ -40,7 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		String lastno = employeeDaoImpl.selectLastEmployeeno();
 		if (lastno!=null) {
 			int num = Integer.parseInt(lastno.substring(1)) + 1;
-			return String.format("e%3d", num);
+			return String.format("e%03d", num);
 		}else {
 			return "e001";
 		}

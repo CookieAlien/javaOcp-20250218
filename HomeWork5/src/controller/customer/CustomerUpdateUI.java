@@ -1,4 +1,4 @@
-package controller.login;
+package controller.customer;
 
 import java.awt.EventQueue;
 
@@ -10,6 +10,7 @@ import javax.swing.border.LineBorder;
 
 import model.Customer;
 import service.impl.CustomerServiceImpl;
+import util.FileTool;
 import util.Helper;
 import util.TitlePanel;
 import javax.swing.JLabel;
@@ -26,11 +27,11 @@ import javax.swing.JPasswordField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class CustomerRegisterUI extends JFrame {
+public class CustomerUpdateUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField usernameField;
+	private JPasswordField oldPasswordField;
 	private JPasswordField passwordField;
 	private JPasswordField confirmField;
 	private JTextField nameField;
@@ -41,7 +42,7 @@ public class CustomerRegisterUI extends JFrame {
 	private Border defaultBorder = new JTextField().getBorder();
 	private Border errorBorder = new LineBorder(Color.red,2);
 	private static CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl();
-
+	private Customer customer = (Customer) FileTool.load("Customer.txt");
 	/**
 	 * Launch the application.
 	 */
@@ -49,7 +50,7 @@ public class CustomerRegisterUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CustomerRegisterUI frame = new CustomerRegisterUI();
+					CustomerUpdateUI frame = new CustomerUpdateUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,7 +62,7 @@ public class CustomerRegisterUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CustomerRegisterUI() {
+	public CustomerUpdateUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 700);
 		contentPane = new JPanel();
@@ -80,41 +81,27 @@ public class CustomerRegisterUI extends JFrame {
 		titleLabel.setBounds(159, 86, 117, 36);
 		contentPane.add(titleLabel);
 		
-		JLabel usernameLabel = new JLabel("帳號：");
+		JLabel usernameLabel = new JLabel("舊密碼：");
 		usernameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		usernameLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
 		usernameLabel.setBounds(10, 135, 92, 36);
 		contentPane.add(usernameLabel);
 		
-		usernameField = new JTextField();
-		usernameField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (Helper.validateUsername(usernameField.getText())) {
-					usernameField.setBorder(defaultBorder);
-				}else {
-					usernameField.setBorder(errorBorder);
-				}
-			}
-		});
-		usernameField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				passwordField.requestFocusInWindow();
-			}
-		});
-		usernameField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
-		usernameField.setBounds(108, 142, 146, 26);
-		contentPane.add(usernameField);
-		usernameField.setColumns(10);
+		oldPasswordField = new JPasswordField();
+		oldPasswordField.setEchoChar('*');
+		oldPasswordField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
+		oldPasswordField.setBounds(108, 142, 146, 26);
+		contentPane.add(oldPasswordField);
+		oldPasswordField.setColumns(10);
 		
-		JLabel usernameHintLabel = new JLabel("帳號為6~16位英文數字，首位不能為數字");
+		JLabel usernameHintLabel = new JLabel("若無須更改密碼請留空白");
 		usernameHintLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		usernameHintLabel.setForeground(Color.BLACK);
 		usernameHintLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		usernameHintLabel.setBounds(51, 170, 375, 29);
 		contentPane.add(usernameHintLabel);
 		
-		JLabel passwordLabel = new JLabel("密碼：");
+		JLabel passwordLabel = new JLabel("新密碼：");
 		passwordLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		passwordLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
 		passwordLabel.setBounds(10, 197, 92, 36);
@@ -202,6 +189,7 @@ public class CustomerRegisterUI extends JFrame {
 		nameField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		nameField.setColumns(10);
 		nameField.setBounds(108, 331, 146, 26);
+		nameField.setText(customer.getName());
 		contentPane.add(nameField);
 		
 		JLabel nameHintLabel = new JLabel("2~24位中英文字");
@@ -236,6 +224,7 @@ public class CustomerRegisterUI extends JFrame {
 		addressField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		addressField.setColumns(10);
 		addressField.setBounds(108, 405, 301, 26);
+		addressField.setText(customer.getAddress());
 		contentPane.add(addressField);
 		
 		JLabel addressHintLabel = new JLabel("接受中英文輸入，請勿空白");
@@ -270,6 +259,7 @@ public class CustomerRegisterUI extends JFrame {
 		emailField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		emailField.setColumns(10);
 		emailField.setBounds(108, 479, 301, 26);
+		emailField.setText(customer.getEmail());
 		contentPane.add(emailField);
 		
 		JLabel emailHintLabel = new JLabel("須為電郵格式，例如: cba@cba.com");
@@ -299,6 +289,7 @@ public class CustomerRegisterUI extends JFrame {
 		phoneField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		phoneField.setColumns(10);
 		phoneField.setBounds(108, 553, 146, 26);
+		phoneField.setText(customer.getPhone());
 		contentPane.add(phoneField);
 		
 		JLabel phoneHintLabel = new JLabel("09開頭10位數字");
@@ -308,23 +299,40 @@ public class CustomerRegisterUI extends JFrame {
 		phoneHintLabel.setBounds(51, 581, 375, 29);
 		contentPane.add(phoneHintLabel);
 		
-		registerButton = new JButton("註冊");
+		registerButton = new JButton("修改");
 		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (validateAll()) {
-					if (customerServiceImpl.isUsernameTaken(usernameField.getText())) {
-						JOptionPane.showMessageDialog(contentPane, "此帳號已被註冊！", "警告", JOptionPane.WARNING_MESSAGE);
-					} else {
-						String customerno = customerServiceImpl.generateCustomerno();
-						customerServiceImpl.register(new Customer(customerno, usernameField.getText(), passwordField.getText(), nameField.getText(), addressField.getText(), emailField.getText(), phoneField.getText()));
-						JOptionPane.showMessageDialog(contentPane, "註冊成功，將轉移至登入畫面");
-						new CustomerLoginUI().setVisible(true);
+				if (oldPasswordField.getText().isBlank()) {
+					if (validateAllNoPassword()) {
+						customer.setName(nameField.getText());
+						customer.setAddress(addressField.getText());
+						customer.setEmail(emailField.getText());
+						customer.setPhone(phoneField.getText());
+						FileTool.save(customer, "Customer.txt");
+						customerServiceImpl.updateInfo(customer);
+						JOptionPane.showMessageDialog(contentPane, "資料修改成功！");
+						new CustomerMenuUI().setVisible(true);
 						dispose();
+					}else {
+						JOptionPane.showMessageDialog(contentPane, "輸入資料有格式錯誤！", "警告", JOptionPane.WARNING_MESSAGE);
 					}
-					
-				} else {
-					JOptionPane.showMessageDialog(contentPane, "輸入資料有格式錯誤！", "警告", JOptionPane.WARNING_MESSAGE);
+				}else {
+					if (validateAll()) {
+						customer.setPassword(passwordField.getText());
+						customer.setName(nameField.getText());
+						customer.setAddress(addressField.getText());
+						customer.setEmail(emailField.getText());
+						customer.setPhone(phoneField.getText());
+						FileTool.save(customer, "Customer.txt");
+						customerServiceImpl.updateInfo(customer);
+						JOptionPane.showMessageDialog(contentPane, "資料修改成功！");
+						new CustomerMenuUI().setVisible(true);
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(contentPane, "輸入資料有格式錯誤！", "警告", JOptionPane.WARNING_MESSAGE);
+					}
 				}
+				
 			}
 		});
 		registerButton.setForeground(new Color(255, 255, 255));
@@ -336,7 +344,7 @@ public class CustomerRegisterUI extends JFrame {
 		JButton returnButton = new JButton("返回");
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new CustomerLoginUI().setVisible(true);
+				new CustomerMenuUI().setVisible(true);
 			}
 		});
 		returnButton.setForeground(Color.WHITE);
@@ -372,14 +380,36 @@ public class CustomerRegisterUI extends JFrame {
 		showPasswordCheckBox_1.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		showPasswordCheckBox_1.setBounds(260, 269, 95, 23);
 		contentPane.add(showPasswordCheckBox_1);
+		
+		JCheckBox showPasswordCheckBox_2 = new JCheckBox("顯示");
+		showPasswordCheckBox_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (showPasswordCheckBox_1.isSelected()) {
+					oldPasswordField.setEchoChar((char) 0);
+				}else {
+					oldPasswordField.setEchoChar('*');
+				}
+			}
+		});
+		showPasswordCheckBox_2.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
+		showPasswordCheckBox_2.setBounds(260, 147, 95, 23);
+		contentPane.add(showPasswordCheckBox_2);
+		
+		
 	}
 	private boolean validateAll() {
-		return Helper.validateUsername(usernameField.getText())
+		return oldPasswordField.getText().equals(customer.getPassword())
 			&& Helper.validatePassword(passwordField.getText())
 			&& passwordField.getText().equals(confirmField.getText())
 			&& Helper.validateName(nameField.getText())
 			&& Helper.validateAddress(addressField.getText())
 			&& Helper.validateEmail(emailField.getText())
 			&& Helper.validatePhoneNumber(phoneField.getText());
+	}
+	private boolean validateAllNoPassword() {
+		return Helper.validateName(nameField.getText())
+				&& Helper.validateAddress(addressField.getText())
+				&& Helper.validateEmail(emailField.getText())
+				&& Helper.validatePhoneNumber(phoneField.getText());
 	}
 }

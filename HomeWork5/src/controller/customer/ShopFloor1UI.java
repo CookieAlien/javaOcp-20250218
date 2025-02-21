@@ -294,7 +294,7 @@ public class ShopFloor1UI extends JFrame {
 		statusMap.put("sale", "特價中");
 		statusMap.put("new_lowest", "再創新低");
 		statusMap.put("out_of_stock", "缺貨中");
-		products = productServiceImpl.getProductsByCategory("furniture");
+		products = productServiceImpl.getProductsByCategory("food");
 		DefaultTableModel model = (DefaultTableModel) shopTable.getModel();
 		model.setRowCount(0);
 		for (Product product : products) {

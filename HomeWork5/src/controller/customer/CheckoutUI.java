@@ -8,6 +8,9 @@ import javax.swing.border.EmptyBorder;
 
 import model.CartItem;
 import model.Customer;
+import model.Porder;
+import service.impl.PorderServiceImpl;
+import util.ExcelTool;
 import util.FileTool;
 import util.Helper;
 import util.TitlePanel;
@@ -31,6 +34,9 @@ import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.ButtonGroup;
 
@@ -50,7 +56,8 @@ public class CheckoutUI extends JFrame {
 	private JButton exportButton;
 	private JButton printButton;
 	private JButton finishButton;
-
+	private static PorderServiceImpl porderServiceImpl = new PorderServiceImpl();
+	private File excelfile;
 	/**
 	 * Launch the application.
 	 */
@@ -149,7 +156,7 @@ public class CheckoutUI extends JFrame {
 			}
 		});
 		buttonGroup.add(excelRadio);
-		excelRadio.setToolTipText("維護中");
+		excelRadio.setToolTipText("讀取的excel檔案，會從第一列搜尋你的名字，並確認第二列的金額足夠支付，若成功找到則於第三列輸出獲得點數");
 		excelRadio.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
 		excelRadio.setFocusPainted(false);
 		excelRadio.setBackground(Color.WHITE);
@@ -164,7 +171,7 @@ public class CheckoutUI extends JFrame {
 		confirmPanel.add(cashLabel);
 		
 		cashField = new JSpinner();
-		cashField.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(100)));
+		cashField.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1000)));
 		cashField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		cashField.setEnabled(false);
 		cashField.setBounds(97, 230, 98, 28);
@@ -193,12 +200,16 @@ public class CheckoutUI extends JFrame {
 					JFileChooser fc = new JFileChooser();
 					int returnval = fc.showOpenDialog(contentPane);
 					if (returnval == JFileChooser.APPROVE_OPTION) {
-						File file = fc.getSelectedFile();
-						if (file.getName().endsWith(".xlsx")) {
+						excelfile = fc.getSelectedFile();
+						if (excelfile.getName().endsWith(".xlsx")) {
 							//TODO: read the excel file
-							
-							outputArea.setText(displayOutput());
-							finishPayment();
+							String outputString = ExcelTool.ExcelPay(excelfile, customer.getName(), sum);
+							if (outputString.equals("success")) {
+								outputArea.setText(displayOutput()+"Excel Pay讀取成功；"+excelfile.getName()+"\n"+"獲得點數："+sum / ExcelTool.moneyPerPoint);
+								finishPayment();
+							}else if (outputString.equals("not found")) {
+								JOptionPane.showMessageDialog(contentPane, "選擇Excel Pay檔案中沒有你的名字或足夠的資金！");
+							}
 						}else {
 							JOptionPane.showMessageDialog(contentPane, "選擇的非excel檔案!");
 						}
@@ -246,6 +257,11 @@ public class CheckoutUI extends JFrame {
 		outputPanel.add(printButton);
 		
 		exportButton = new JButton("輸出明細");
+		exportButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				outputExcel();
+			}
+		});
 		exportButton.setEnabled(false);
 		exportButton.setForeground(Color.WHITE);
 		exportButton.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
@@ -276,6 +292,12 @@ public class CheckoutUI extends JFrame {
 		contentPane.add(returnButton);
 		
 		finishButton = new JButton("完成");
+		finishButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new CustomerMenuUI().setVisible(true);
+				dispose();
+			}
+		});
 		finishButton.setEnabled(false);
 		finishButton.setForeground(Color.WHITE);
 		finishButton.setFont(new Font("微軟正黑體", Font.PLAIN, 24));
@@ -330,10 +352,19 @@ public class CheckoutUI extends JFrame {
 	}
 
 	protected void finishPayment() {
+		String porderno = porderServiceImpl.generateOrderno();
+		//FileTool.save(null, "ShoppingList.txt");
+		porderServiceImpl.createOrder(new Porder(porderno, customer.getCustomerno(), "e001", sum), shoppingList);
 		checkoutButton.setEnabled(false);
 		returnButton.setEnabled(false);
 		exportButton.setEnabled(true);
 		printButton.setEnabled(true);
 		finishButton.setEnabled(true);
+	}
+	private void outputExcel() {
+		String path = ExcelTool.WriteCartToExcel(excelfile, customer.getName(), shoppingList, sum);
+		if (path!=null) {
+			JOptionPane.showMessageDialog(contentPane, "明細已輸出至 "+path);
+		}
 	}
 }

@@ -64,6 +64,12 @@ public class CustomerMenuUI extends JFrame {
 		welcomeLabel.setText("歡迎，"+customer.getName());
 		
 		JButton shopButton = new JButton("開始購物");
+		shopButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ShopFloor4UI().setVisible(true);
+				dispose();
+			}
+		});
 		shopButton.setBackground(new Color(0, 0, 200));
 		shopButton.setForeground(new Color(255, 255, 255));
 		shopButton.setFont(new Font("微軟正黑體", Font.BOLD, 16));
@@ -88,5 +94,18 @@ public class CustomerMenuUI extends JFrame {
 		exitButton.setBackground(new Color(255, 0, 0));
 		exitButton.setBounds(309, 182, 100, 37);
 		contentPane.add(exitButton);
+		
+		JButton changeButton = new JButton("修改個人資料");
+		changeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new CustomerUpdateUI().setVisible(true);
+				dispose();
+			}
+		});
+		changeButton.setForeground(Color.WHITE);
+		changeButton.setFont(new Font("微軟正黑體", Font.BOLD, 16));
+		changeButton.setBackground(new Color(0, 0, 200));
+		changeButton.setBounds(25, 277, 141, 37);
+		contentPane.add(changeButton);
 	}
 }

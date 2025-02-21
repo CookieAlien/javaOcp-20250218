@@ -167,4 +167,21 @@ public class PorderDaoImpl implements PorderDao {
 
 	}
 
+	@Override
+	public String SelectLastPorderno() {
+		String sql = "select max(porderno) from porder";
+		String output = null;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				output = resultSet.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return output;
+	}
+
 }

@@ -15,12 +15,13 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 	Connection connection = DBConnection.getConnection();
 	@Override
 	public void add(OrderItem item) {
-		String sql = "insert into orderdetails(porderno,productno,amount) values(?,?,?)";
+		String sql = "insert into orderdetails(porderno,productno,amount,sum) values(?,?,?,?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, item.getPorderno());
 			preparedStatement.setString(2, item.getProductno());
 			preparedStatement.setInt(3, item.getAmount());
+			preparedStatement.setInt(4, item.getSum());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -42,6 +43,7 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 				item.setPorderno(resultSet.getString("porderno"));
 				item.setProductno(resultSet.getString("productno"));
 				item.setAmount(resultSet.getInt("amount"));
+				item.setSum(resultSet.getInt("sum"));
 				orderItems.add(item);
 			}
 		} catch (SQLException e) {
@@ -65,6 +67,7 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 				item.setPorderno(resultSet.getString("porderno"));
 				item.setProductno(resultSet.getString("productno"));
 				item.setAmount(resultSet.getInt("amount"));
+				item.setSum(resultSet.getInt("sum"));
 				orderItems.add(item);
 			}
 		} catch (SQLException e) {
@@ -88,6 +91,7 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 				item.setPorderno(resultSet.getString("porderno"));
 				item.setProductno(resultSet.getString("productno"));
 				item.setAmount(resultSet.getInt("amount"));
+				item.setSum(resultSet.getInt("sum"));
 				orderItems.add(item);
 			}
 		} catch (SQLException e) {
@@ -99,12 +103,13 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 
 	@Override
 	public void update(OrderItem item) {
-		String sql= "update orderdetails set amount=? where porderno=? and productno=?";
+		String sql= "update orderdetails set amount=?,sum=? where porderno=? and productno=?";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, item.getAmount());
-			preparedStatement.setString(2, item.getPorderno());
-			preparedStatement.setString(3, item.getProductno());
+			preparedStatement.setInt(2, item.getSum());
+			preparedStatement.setString(3, item.getPorderno());
+			preparedStatement.setString(4, item.getProductno());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

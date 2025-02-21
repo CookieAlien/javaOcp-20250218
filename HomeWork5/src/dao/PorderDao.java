@@ -12,6 +12,7 @@ public interface PorderDao {
 	List<Porder> selectByCustomer(String customerno);
 	List<Porder> selectByEmployee(String employeeno);
 	List<Porder> selectByPorderno(String porderno);
+	String SelectLastPorderno();
 	//update
 	void update(Porder order);
 	//delete

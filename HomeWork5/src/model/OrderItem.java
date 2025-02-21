@@ -5,14 +5,16 @@ public class OrderItem {
 	private String porderno;
 	private String productno;
 	private int amount;
+	private int sum;
 	public OrderItem() {
 		// TODO Auto-generated constructor stub
 	}
-	public OrderItem(String porderno, String productno, int amount) {
+	public OrderItem(String porderno, String productno, int amount, int sum) {
 		super();
 		this.porderno = porderno;
 		this.productno = productno;
 		this.amount = amount;
+		this.setSum(sum);
 	}
 	public int getOrderDetailsID() {
 		return orderDetailsID;
@@ -37,6 +39,12 @@ public class OrderItem {
 	}
 	public void setAmount(int amount) {
 		this.amount = amount;
+	}
+	public int getSum() {
+		return sum;
+	}
+	public void setSum(int sum) {
+		this.sum = sum;
 	}
 	
 	
