@@ -28,13 +28,13 @@ CREATE TABLE `orderdetails` (
   `orderdetailid` int NOT NULL AUTO_INCREMENT,
   `porderno` varchar(45) DEFAULT NULL,
   `productno` varchar(45) DEFAULT NULL,
+  `productname` varchar(45) DEFAULT NULL,
   `amount` int DEFAULT NULL,
+  `sum` int DEFAULT NULL,
   PRIMARY KEY (`orderdetailid`),
-  KEY `detailsproduct_idx` (`productno`),
   KEY `detailsporder` (`porderno`),
-  CONSTRAINT `detailsporder` FOREIGN KEY (`porderno`) REFERENCES `porder` (`porderno`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `detailsproduct` FOREIGN KEY (`productno`) REFERENCES `product` (`productno`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `detailsporder` FOREIGN KEY (`porderno`) REFERENCES `porder` (`porderno`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `orderdetails` (
 
 LOCK TABLES `orderdetails` WRITE;
 /*!40000 ALTER TABLE `orderdetails` DISABLE KEYS */;
-INSERT INTO `orderdetails` VALUES (1,'o001','p001',2);
+INSERT INTO `orderdetails` VALUES (1,'o001','p001',NULL,2,1398),(63,'o002','p001','blahaj 鯊魚玩偶',2,1398),(64,'o002','p002','jordkastanj 靠枕',2,138),(65,'o002','p004','huvudroll 肉丸',3,1197);
 /*!40000 ALTER TABLE `orderdetails` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-19 16:05:17
+-- Dump completed on 2025-02-21 16:21:26

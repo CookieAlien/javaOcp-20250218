@@ -29,6 +29,7 @@ CREATE TABLE `porder` (
   `porderno` varchar(45) DEFAULT NULL,
   `customerno` varchar(45) DEFAULT NULL,
   `employeeno` varchar(45) DEFAULT NULL,
+  `totalprice` int DEFAULT NULL,
   `last_modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `porderno_UNIQUE` (`porderno`),
@@ -36,7 +37,7 @@ CREATE TABLE `porder` (
   KEY `porderemployee_idx` (`employeeno`),
   CONSTRAINT `pordecustomer` FOREIGN KEY (`customerno`) REFERENCES `customer` (`customerno`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `porderemployee` FOREIGN KEY (`employeeno`) REFERENCES `employee` (`employeeno`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +46,7 @@ CREATE TABLE `porder` (
 
 LOCK TABLES `porder` WRITE;
 /*!40000 ALTER TABLE `porder` DISABLE KEYS */;
-INSERT INTO `porder` VALUES (1,'o001','c001','e001','2025-02-19 03:10:46');
+INSERT INTO `porder` VALUES (1,'o001','c001','e001',1398,'2025-02-21 01:09:35'),(23,'o002','c002','e001',2733,'2025-02-21 06:07:52');
 /*!40000 ALTER TABLE `porder` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -58,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-19 16:05:17
+-- Dump completed on 2025-02-21 16:21:26
