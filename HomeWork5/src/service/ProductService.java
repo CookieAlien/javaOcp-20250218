@@ -12,6 +12,7 @@ public interface ProductService {
 	Product getProductByNo(String productno);
 	List<Product> getProductsByCategory(String category);
 	List<Product> getProductsByStatus(String status);
+	String generateProductno();
 	//update
 	void updateProduct(Product product);
 	//delete

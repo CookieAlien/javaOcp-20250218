@@ -56,4 +56,15 @@ public class ProductServiceImpl implements ProductService {
 
 	}
 
+	@Override
+	public String generateProductno() {
+		String lastno = productDaoImpl.selectLastProductno();
+		if (lastno !=null) {
+			int num = Integer.parseInt(lastno.substring(1)) + 1;
+			return String.format("p%03d", num);
+		} else {
+			return "p001";
+		}
+	}
+
 }

@@ -12,6 +12,7 @@ public interface ProductDao {
 	List<Product> selectByProductno(String productno);
 	List<Product> selectByCategory(String category);
 	List<Product> selectByStatus(String status);
+	String selectLastProductno();
 	//update
 	void update(Product product);
 	//delete

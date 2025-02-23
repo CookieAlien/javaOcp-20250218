@@ -161,5 +161,22 @@ public class ProductDaoImpl implements ProductDao{
 		}
 		return products;
 	}
+
+	@Override
+	public String selectLastProductno() {
+		String sql = "select max(productno) from product";
+		String output = null;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				output = resultSet.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return output;
+	}
 	
 }

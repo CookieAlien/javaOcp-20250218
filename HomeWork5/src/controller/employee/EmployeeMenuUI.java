@@ -109,6 +109,12 @@ public class EmployeeMenuUI extends JFrame {
 		contentPane.add(manageCusButton);
 		
 		JButton productButton = new JButton("商品管理");
+		productButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ManageProductUI().setVisible(true);
+				dispose();
+			}
+		});
 		productButton.setForeground(Color.WHITE);
 		productButton.setFont(new Font("微軟正黑體", Font.BOLD, 16));
 		productButton.setBackground(Color.BLACK);

@@ -14,6 +14,8 @@ import util.TitlePanel;
 import java.awt.GridBagLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -27,11 +29,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Component;
 import javax.swing.table.TableCellRenderer;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.poi.util.ArrayUtil;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ManageProductUI extends JFrame {
 
@@ -40,6 +48,7 @@ public class ManageProductUI extends JFrame {
 	private Employee operator = (Employee) FileTool.load("Employee.txt");
 	private ProductServiceImpl productServiceImpl = new ProductServiceImpl();
 	private List<Product> products;
+	private Product currentProduct;
 	private JTable table;
 	private JTextField addNameField;
 	private JTextField updateNameField;
@@ -47,6 +56,15 @@ public class ManageProductUI extends JFrame {
 	private Map<String, String> categoryMap;
 	private String[] categories = {"children","decoration","furniture","food"};
 	private String[] statuses = {"normal","sale","new_lowest","out_of_stock"};
+	private JComboBox addCategoryBox;
+	private JComboBox addStatusBox;
+	private JComboBox updateCategoryBox;
+	private JComboBox updateStatusBox;
+	private JSpinner addPriceSpinner;
+	private JSpinner updatePriceSpinner;
+	private JLabel productnoLabel;
+	private JButton updateButton;
+	private JButton deleteButton;
 
 	/**
 	 * Launch the application.
@@ -120,6 +138,8 @@ public class ManageProductUI extends JFrame {
 		JButton returnButton = new JButton("返回");
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new EmployeeMenuUI().setVisible(true);
+				dispose();
 			}
 		});
 		returnButton.setFont(new Font("微軟正黑體", Font.BOLD, 18));
@@ -174,6 +194,13 @@ public class ManageProductUI extends JFrame {
 				return component;
 			}
 		};
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				showSelectedProduct();
+			}
+
+		});
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -270,7 +297,7 @@ public class ManageProductUI extends JFrame {
 		addNameLabel_1.setBounds(10, 95, 80, 23);
 		panel_1.add(addNameLabel_1);
 		
-		JSpinner addPriceSpinner = new JSpinner();
+		addPriceSpinner = new JSpinner();
 		addPriceSpinner.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		addPriceSpinner.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(100)));
 		addPriceSpinner.setBounds(100, 95, 80, 24);
@@ -282,7 +309,7 @@ public class ManageProductUI extends JFrame {
 		addStatusLabel.setBounds(156, 140, 48, 23);
 		panel_1.add(addStatusLabel);
 		
-		JComboBox addStatusBox = new JComboBox();
+		addStatusBox = new JComboBox();
 		addStatusBox.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		addStatusBox.setModel(new DefaultComboBoxModel(new String[] {"正常", "特價中", "再創新低", "缺貨中"}));
 		addStatusBox.setSelectedIndex(0);
@@ -290,6 +317,11 @@ public class ManageProductUI extends JFrame {
 		panel_1.add(addStatusBox);
 		
 		JButton addButton = new JButton("新增商品");
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addProduct();
+			}
+		});
 		addButton.setForeground(Color.WHITE);
 		addButton.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		addButton.setBackground(new Color(0, 0, 200));
@@ -302,7 +334,7 @@ public class ManageProductUI extends JFrame {
 		addCategoryLabel.setBounds(10, 140, 48, 23);
 		panel_1.add(addCategoryLabel);
 		
-		JComboBox addCategoryBox = new JComboBox();
+		addCategoryBox = new JComboBox();
 		addCategoryBox.setModel(new DefaultComboBoxModel(new String[] {"兒童用品", "居家裝飾", "家具", "美食"}));
 		addCategoryBox.setSelectedIndex(0);
 		addCategoryBox.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
@@ -315,17 +347,17 @@ public class ManageProductUI extends JFrame {
 		panel_1_1.setBounds(420, 381, 306, 272);
 		contentPane.add(panel_1_1);
 		
-		JLabel updateProductLabel = new JLabel("修改商品");
+		JLabel updateProductLabel = new JLabel("修改/刪除商品");
 		updateProductLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		updateProductLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 24));
 		updateProductLabel.setBounds(10, 10, 296, 30);
 		panel_1_1.add(updateProductLabel);
 		
-		JLabel addNameLabel_2 = new JLabel("商品名稱：");
-		addNameLabel_2.setHorizontalAlignment(SwingConstants.TRAILING);
-		addNameLabel_2.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
-		addNameLabel_2.setBounds(10, 102, 80, 23);
-		panel_1_1.add(addNameLabel_2);
+		JLabel updateNameLabel = new JLabel("商品名稱：");
+		updateNameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		updateNameLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		updateNameLabel.setBounds(10, 102, 80, 23);
+		panel_1_1.add(updateNameLabel);
 		
 		updateNameField = new JTextField();
 		updateNameField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
@@ -333,13 +365,14 @@ public class ManageProductUI extends JFrame {
 		updateNameField.setBounds(100, 102, 194, 23);
 		panel_1_1.add(updateNameField);
 		
-		JLabel addNameLabel_1_1 = new JLabel("價格：");
-		addNameLabel_1_1.setHorizontalAlignment(SwingConstants.TRAILING);
-		addNameLabel_1_1.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
-		addNameLabel_1_1.setBounds(10, 147, 80, 23);
-		panel_1_1.add(addNameLabel_1_1);
+		JLabel updatePriceLabel = new JLabel("價格：");
+		updatePriceLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		updatePriceLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		updatePriceLabel.setBounds(10, 147, 80, 23);
+		panel_1_1.add(updatePriceLabel);
 		
-		JSpinner updatePriceSpinner = new JSpinner();
+		updatePriceSpinner = new JSpinner();
+		updatePriceSpinner.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(100)));
 		updatePriceSpinner.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		updatePriceSpinner.setBounds(100, 147, 80, 24);
 		panel_1_1.add(updatePriceSpinner);
@@ -350,21 +383,33 @@ public class ManageProductUI extends JFrame {
 		updateStatusLabel.setBounds(156, 190, 48, 23);
 		panel_1_1.add(updateStatusLabel);
 		
-		JComboBox updateStatusBox = new JComboBox();
+		updateStatusBox = new JComboBox();
 		updateStatusBox.setModel(new DefaultComboBoxModel(new String[] {"正常", "特價中", "再創新低", "缺貨中"}));
 		updateStatusBox.setSelectedIndex(0);
 		updateStatusBox.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		updateStatusBox.setBounds(204, 190, 90, 23);
 		panel_1_1.add(updateStatusBox);
 		
-		JButton updateButton = new JButton("修改商品");
+		updateButton = new JButton("修改商品");
+		updateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateProduct();
+			}
+		});
+		updateButton.setEnabled(false);
 		updateButton.setForeground(Color.WHITE);
 		updateButton.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		updateButton.setBackground(new Color(0, 0, 200));
 		updateButton.setBounds(40, 225, 114, 37);
 		panel_1_1.add(updateButton);
 		
-		JButton deleteButton = new JButton("修改商品");
+		deleteButton = new JButton("刪除商品");
+		deleteButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteProduct();
+			}
+		});
+		deleteButton.setEnabled(false);
 		deleteButton.setForeground(Color.WHITE);
 		deleteButton.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		deleteButton.setBackground(new Color(255, 0, 0));
@@ -377,7 +422,7 @@ public class ManageProductUI extends JFrame {
 		updateproductLabel.setBounds(10, 54, 80, 23);
 		panel_1_1.add(updateproductLabel);
 		
-		JLabel productnoLabel = new JLabel("");
+		productnoLabel = new JLabel("");
 		productnoLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
 		productnoLabel.setBounds(100, 54, 194, 23);
 		panel_1_1.add(productnoLabel);
@@ -388,7 +433,7 @@ public class ManageProductUI extends JFrame {
 		updateCategoryLabel.setBounds(10, 190, 48, 23);
 		panel_1_1.add(updateCategoryLabel);
 		
-		JComboBox updateCategoryBox = new JComboBox();
+		updateCategoryBox = new JComboBox();
 		updateCategoryBox.setModel(new DefaultComboBoxModel(new String[] {"兒童用品", "居家裝飾", "家具", "美食"}));
 		updateCategoryBox.setSelectedIndex(0);
 		updateCategoryBox.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
@@ -403,6 +448,11 @@ public class ManageProductUI extends JFrame {
 		for (Product product : products) {
 			model.addRow(new Object[] {product.getProductno(),product.getProductname(),product.getPrice(),categoryMap.get(product.getCategory()),statusMap.get(product.getStatus())});
 		}
+		productnoLabel.setText("");
+		updateNameField.setText("");
+		updatePriceSpinner.setValue(0);
+		updateButton.setEnabled(false);
+		deleteButton.setEnabled(false);
 	}
 	private void showShopByCategory(int index) {
 		if (index >= 0) {
@@ -422,6 +472,87 @@ public class ManageProductUI extends JFrame {
 			for (Product product : products) {
 				model.addRow(new Object[] {product.getProductno(),product.getProductname(),product.getPrice(),categoryMap.get(product.getCategory()),statusMap.get(product.getStatus())});
 			}
+		}
+	}
+	private void addProduct() {
+		String productname = addNameField.getText();
+		if (!productname.isBlank()) {
+			int price = (int)addPriceSpinner.getValue();
+			if (price>0) {
+				int categoryindex = addCategoryBox.getSelectedIndex();
+				if (categoryindex>=0) {
+					int statusindex = addStatusBox.getSelectedIndex();
+					if (statusindex>=0) {
+						Product product = new Product();
+						String productno = productServiceImpl.generateProductno();
+						product.setProductno(productno);
+						product.setProductname(productname);
+						product.setPrice(price);
+						product.setCategory(categories[categoryindex]);
+						product.setStatus(statuses[statusindex]);
+						productServiceImpl.addProduct(product);
+						JOptionPane.showMessageDialog(contentPane, "新增商品成功！商品編號："+productno);
+						addNameField.setText("");
+						addPriceSpinner.setValue(0);
+						populateShop();
+					} else {
+						JOptionPane.showMessageDialog(contentPane, "請選擇狀態！", "警告", JOptionPane.WARNING_MESSAGE);
+					}
+				} else {
+					JOptionPane.showMessageDialog(contentPane, "請選擇類別！", "警告", JOptionPane.WARNING_MESSAGE);
+				}
+			} else {
+				JOptionPane.showMessageDialog(contentPane, "價格需大於0！", "警告", JOptionPane.WARNING_MESSAGE);
+			}
+		} else {
+			JOptionPane.showMessageDialog(contentPane, "請輸入商品名稱！", "警告", JOptionPane.WARNING_MESSAGE);
+		}
+	}
+	private void showSelectedProduct() {
+		int row = table.getSelectedRow();
+		currentProduct = productServiceImpl.getProductByNo((String) table.getValueAt(row, 0));
+		productnoLabel.setText(currentProduct.getProductno());
+		updateNameField.setText(currentProduct.getProductname());
+		updatePriceSpinner.setValue(currentProduct.getPrice());
+		updateCategoryBox.setSelectedIndex(ArrayUtils.indexOf(categories, currentProduct.getCategory()));
+		updateStatusBox.setSelectedIndex(ArrayUtils.indexOf(statuses, currentProduct.getStatus()));
+		updateButton.setEnabled(true);
+		deleteButton.setEnabled(true);
+	}
+	private void updateProduct() {
+		String productname = updateNameField.getText();
+		if (!productname.isBlank()) {
+			int price = (int)updatePriceSpinner.getValue();
+			if (price>0) {
+				int categoryindex = updateCategoryBox.getSelectedIndex();
+				if (categoryindex>=0) {
+					int statusindex = updateStatusBox.getSelectedIndex();
+					if (statusindex>=0) {
+						currentProduct.setProductname(productname);
+						currentProduct.setPrice(price);
+						currentProduct.setCategory(categories[categoryindex]);
+						currentProduct.setStatus(statuses[statusindex]);
+						productServiceImpl.updateProduct(currentProduct);
+						JOptionPane.showMessageDialog(contentPane, "更新商品成功！");
+						populateShop();
+					} else {
+						JOptionPane.showMessageDialog(contentPane, "請選擇狀態！", "警告", JOptionPane.WARNING_MESSAGE);
+					}
+				} else {
+					JOptionPane.showMessageDialog(contentPane, "請選擇類別！", "警告", JOptionPane.WARNING_MESSAGE);
+				}
+			} else {
+				JOptionPane.showMessageDialog(contentPane, "價格需大於0！", "警告", JOptionPane.WARNING_MESSAGE);
+			}
+		} else {
+			JOptionPane.showMessageDialog(contentPane, "請輸入商品名稱！", "警告", JOptionPane.WARNING_MESSAGE);
+		}
+	}
+	private void deleteProduct() {
+		int returnval = JOptionPane.showConfirmDialog(contentPane, "確認要刪除產品編號:"+currentProduct.getProductno()+"嗎？此動作無法復原！", "資訊", JOptionPane.YES_NO_OPTION);
+		if (returnval == JOptionPane.YES_OPTION) {
+			productServiceImpl.deleteProduct(currentProduct.getProductno());
+			populateShop();
 		}
 	}
 }
