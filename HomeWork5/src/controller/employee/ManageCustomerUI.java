@@ -180,6 +180,7 @@ public class ManageCustomerUI extends JFrame {
 		JButton refreshButton = new JButton("重新整理");
 		refreshButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				resetInfo();
 				displayCustomers();
 			}
 		});

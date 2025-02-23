@@ -66,6 +66,7 @@ public class CustomerMenuUI extends JFrame {
 		JButton shopButton = new JButton("開始購物");
 		shopButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				FileTool.save(null, "ShoppingList.txt");
 				new ShopFloor4UI().setVisible(true);
 				dispose();
 			}

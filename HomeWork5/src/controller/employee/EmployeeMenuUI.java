@@ -64,6 +64,12 @@ public class EmployeeMenuUI extends JFrame {
 		welcomeLabel.setText("歡迎，"+employee.getName());
 		
 		JButton manageEmpButton = new JButton("員工管理");
+		manageEmpButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ManageEmployeeUI().setVisible(true);
+				dispose();
+			}
+		});
 		manageEmpButton.setBackground(new Color(0, 0, 200));
 		manageEmpButton.setForeground(new Color(255, 255, 255));
 		manageEmpButton.setFont(new Font("微軟正黑體", Font.BOLD, 16));

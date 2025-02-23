@@ -10,7 +10,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import model.Employee;
-import service.NewEmployeeUI;
 import service.impl.EmployeeServiceImpl;
 import util.FileTool;
 import util.Helper;
@@ -148,7 +147,7 @@ public class ManageEmployeeUI extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showCustomerInfo();
+				showEmployeeInfo();
 			}
 		});
 		table.setModel(new DefaultTableModel(
@@ -180,6 +179,7 @@ public class ManageEmployeeUI extends JFrame {
 		JButton refreshButton = new JButton("重新整理");
 		refreshButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				resetInfo();
 				displayCustomers();
 			}
 		});
@@ -226,7 +226,7 @@ public class ManageEmployeeUI extends JFrame {
 				} else if (currrentEmployee.getEmployeeno().equals("e001")) {
 					JOptionPane.showMessageDialog(contentPane, "不能刪除系統帳號！", "警告", JOptionPane.WARNING_MESSAGE);
 				} else {
-					int option = JOptionPane.showConfirmDialog(contentPane, "確定要刪除此顧客?與該顧客相關的訂單都會消失且無法復原！");
+					int option = JOptionPane.showConfirmDialog(contentPane, "確定要刪除此員工?與該員工相關的訂單都會消失且無法復原！");
 					if (option==JOptionPane.YES_OPTION) {
 						employeeServiceImpl.deleteEmployee(currrentEmployee.getEmployeeno());
 						resetInfo();
@@ -456,7 +456,7 @@ public class ManageEmployeeUI extends JFrame {
 			model.addRow(new Object[] {emp.getEmployeeno(),emp.getUsername(),emp.getName()});
 		}
 	}
-	private void showCustomerInfo() {
+	private void showEmployeeInfo() {
 		int row = table.getSelectedRow();
 		if (row>=0) {
 			currrentEmployee = employees.get(row);

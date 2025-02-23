@@ -1,18 +1,23 @@
-package service;
+package controller.employee;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
-import controller.employee.ManageEmployeeUI;
 import model.Employee;
+import service.impl.EmployeeServiceImpl;
 import util.FileTool;
+import util.Helper;
 import util.TitlePanel;
 import java.awt.GridBagLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -21,6 +26,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class NewEmployeeUI extends JFrame {
 
@@ -32,7 +39,10 @@ public class NewEmployeeUI extends JFrame {
 	private JTextField addressField;
 	private JTextField emailField;
 	private JTextField phoneField;
-	private JTextField textField;
+	private JTextField usernameField;
+	private Border defaultBorder = new JTextField().getBorder();
+	private Border errorBorder = new LineBorder(Color.red,2);
+	private EmployeeServiceImpl employeeServiceImpl = new EmployeeServiceImpl();
 
 	/**
 	 * Launch the application.
@@ -125,6 +135,21 @@ public class NewEmployeeUI extends JFrame {
 		panel_1.add(infoLabel_2);
 		
 		passwordField = new JPasswordField();
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (passwordField.getText().length()>=5 && !passwordField.getText().isBlank()) {
+					passwordField.setBorder(defaultBorder);
+				} else {
+					passwordField.setBorder(errorBorder);
+				}
+			}
+		});
+		passwordField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				nameField.requestFocusInWindow();
+			}
+		});
 		passwordField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		passwordField.setEchoChar('*');
 		passwordField.setColumns(10);
@@ -132,6 +157,15 @@ public class NewEmployeeUI extends JFrame {
 		panel_1.add(passwordField);
 		
 		JCheckBox showPasswordCheckBox = new JCheckBox("顯示");
+		showPasswordCheckBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (showPasswordCheckBox.isSelected()) {
+					passwordField.setEchoChar((char) 0);
+				} else {
+					passwordField.setEchoChar('*');
+				}
+			}
+		});
 		showPasswordCheckBox.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		showPasswordCheckBox.setBackground(Color.WHITE);
 		showPasswordCheckBox.setBounds(340, 119, 69, 23);
@@ -152,6 +186,21 @@ public class NewEmployeeUI extends JFrame {
 		panel_1.add(infoLabel_3);
 		
 		nameField = new JTextField();
+		nameField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (Helper.validateName(nameField.getText())) {
+					nameField.setBorder(defaultBorder);
+				} else {
+					nameField.setBorder(errorBorder);
+				}
+			}
+		});
+		nameField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addressField.requestFocusInWindow();
+			}
+		});
 		nameField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		nameField.setColumns(10);
 		nameField.setBounds(197, 172, 137, 27);
@@ -172,6 +221,21 @@ public class NewEmployeeUI extends JFrame {
 		panel_1.add(infoLabel_4);
 		
 		addressField = new JTextField();
+		addressField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (Helper.validateAddress(addressField.getText())) {
+					addressField.setBorder(defaultBorder);
+				} else {
+					addressField.setBorder(errorBorder);
+				}
+			}
+		});
+		addressField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				emailField.requestFocusInWindow();
+			}
+		});
 		addressField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		addressField.setColumns(10);
 		addressField.setBounds(169, 231, 218, 27);
@@ -192,6 +256,21 @@ public class NewEmployeeUI extends JFrame {
 		panel_1.add(infoLabel_5);
 		
 		emailField = new JTextField();
+		emailField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (Helper.validateEmail(emailField.getText())) {
+					emailField.setBorder(defaultBorder);
+				} else {
+					emailField.setBorder(errorBorder);
+				}
+			}
+		});
+		emailField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				phoneField.requestFocusInWindow();
+			}
+		});
 		emailField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		emailField.setColumns(10);
 		emailField.setBounds(169, 281, 218, 27);
@@ -212,6 +291,16 @@ public class NewEmployeeUI extends JFrame {
 		panel_1.add(infoLabel_6);
 		
 		phoneField = new JTextField();
+		phoneField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (Helper.validatePhoneNumber(phoneField.getText())) {
+					phoneField.setBorder(defaultBorder);
+				} else {
+					phoneField.setBorder(errorBorder);
+				}
+			}
+		});
 		phoneField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		phoneField.setColumns(10);
 		phoneField.setBounds(197, 344, 137, 27);
@@ -224,11 +313,26 @@ public class NewEmployeeUI extends JFrame {
 		phoneHintLabel.setBounds(169, 370, 200, 29);
 		panel_1.add(phoneHintLabel);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
-		textField.setColumns(10);
-		textField.setBounds(197, 47, 137, 27);
-		panel_1.add(textField);
+		usernameField = new JTextField();
+		usernameField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (usernameField.getText().length()>=5 && !usernameField.getText().isBlank()) {
+					usernameField.setBorder(defaultBorder);
+				} else {
+					usernameField.setBorder(errorBorder);
+				}
+			}
+		});
+		usernameField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				passwordField.requestFocusInWindow();
+			}
+		});
+		usernameField.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
+		usernameField.setColumns(10);
+		usernameField.setBounds(197, 47, 137, 27);
+		panel_1.add(usernameField);
 		
 		JLabel usernameHintLabel = new JLabel("至少5位任意文字");
 		usernameHintLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -238,6 +342,30 @@ public class NewEmployeeUI extends JFrame {
 		panel_1.add(usernameHintLabel);
 		
 		JButton addEmpButton = new JButton("新增員工");
+		addEmpButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (validateAll()) {
+					if (employeeServiceImpl.isUsernameTaken(usernameField.getText())) {
+						JOptionPane.showMessageDialog(contentPane, "帳號名稱已被使用！", "警告", JOptionPane.WARNING_MESSAGE);
+					} else {
+						Employee currrentEmployee = new Employee();
+						currrentEmployee.setUsername(usernameField.getText());
+						currrentEmployee.setPassword(passwordField.getText());
+						currrentEmployee.setName(nameField.getText());
+						currrentEmployee.setAddress(addressField.getText());
+						currrentEmployee.setEmail(emailField.getText());
+						currrentEmployee.setPhone(phoneField.getText());
+						currrentEmployee.setEmployeeno(employeeServiceImpl.generateEmployeeno());
+						employeeServiceImpl.register(currrentEmployee);
+						JOptionPane.showMessageDialog(contentPane, "新增成功!");
+						new ManageEmployeeUI().setVisible(true);
+						dispose();
+					}
+				} else {
+					JOptionPane.showMessageDialog(contentPane, "輸入資料有格式錯誤！", "警告", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 		addEmpButton.setForeground(new Color(255, 255, 255));
 		addEmpButton.setFont(new Font("微軟正黑體", Font.BOLD, 18));
 		addEmpButton.setBackground(new Color(0, 0, 0));
@@ -250,5 +378,13 @@ public class NewEmployeeUI extends JFrame {
 		titleLabel_1.setFont(new Font("微軟正黑體", Font.BOLD, 22));
 		titleLabel_1.setBounds(140, 10, 229, 35);
 		panel_1.add(titleLabel_1);
+	}
+	private boolean validateAll() {
+		return usernameField.getText().length()>=5 && !usernameField.getText().isBlank()
+				&& passwordField.getText().length()>=5 && !passwordField.getText().isBlank()
+				&& Helper.validateName(nameField.getText())
+				&& Helper.validateAddress(addressField.getText())
+				&& Helper.validateEmail(emailField.getText())
+				&& Helper.validatePhoneNumber(phoneField.getText());
 	}
 }

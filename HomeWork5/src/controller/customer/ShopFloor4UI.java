@@ -257,6 +257,8 @@ public class ShopFloor4UI extends JFrame {
 				int option = JOptionPane.showConfirmDialog(contentPane, "確定要離開商店嗎?購物車將被清空！", "資訊", JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.YES_OPTION) {
 					FileTool.save(null, "ShoppingList.txt");
+					new CustomerMenuUI().setVisible(true);
+					dispose();
 				}
 			}
 		});
