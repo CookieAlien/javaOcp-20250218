@@ -1,6 +1,9 @@
 # javaOcp-20250218： 家具店管理系統
 ### 使用技術
 - Java
+  - Jframe: UI畫面
+  - Apachi POI: excel輸出
+  - JfreeChart: 圖表產出
 - MySQL
 #### 設計模式
 - MVC
