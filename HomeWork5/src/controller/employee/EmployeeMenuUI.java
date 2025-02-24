@@ -128,6 +128,11 @@ public class EmployeeMenuUI extends JFrame {
 		contentPane.add(productButton);
 		
 		JButton reportButton = new JButton("檢視報表");
+		reportButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ViewChartUI().setVisible(true);
+			}
+		});
 		reportButton.setForeground(Color.WHITE);
 		reportButton.setFont(new Font("微軟正黑體", Font.BOLD, 16));
 		reportButton.setBackground(new Color(128, 64, 0));
