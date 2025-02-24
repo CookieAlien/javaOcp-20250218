@@ -17,8 +17,8 @@
 - 開啟MySQL Workbench並連接到MySQL伺服器
 - 匯入`db`資料夾內的所有檔案，並確認是否出現`furnitureshop`的Schema
 ### 3. 執行程式
-- (Windows) 雙擊ConsoleShop.jar即可執行
-- 或開啟終端，移動到ConsoleShop.jar所在資料夾，並輸入‵java -jar FurnitureShop.jar`
+- (Windows) 雙擊FurnitureShop.jar即可執行
+- 或開啟終端，移動到FurnitureShop.jar所在資料夾，並輸入‵java -jar FurnitureShop.jar`
 # 目錄結構
 ```
 src/
