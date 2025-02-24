@@ -1,2 +1,7 @@
 /bin/
 /target/
+Customer.txt
+Employee.txt
+Porder.txt
+ShoppingList.txt
+*.xlsx

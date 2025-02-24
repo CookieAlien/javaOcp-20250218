@@ -98,7 +98,7 @@ public class EmployeeMenuUI extends JFrame {
 		exitButton.setForeground(Color.WHITE);
 		exitButton.setFont(new Font("微軟正黑體", Font.BOLD, 16));
 		exitButton.setBackground(new Color(255, 0, 0));
-		exitButton.setBounds(252, 316, 100, 37);
+		exitButton.setBounds(252, 301, 100, 37);
 		contentPane.add(exitButton);
 		
 		JButton manageCusButton = new JButton("顧客管理");
@@ -131,12 +131,13 @@ public class EmployeeMenuUI extends JFrame {
 		reportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new ViewChartUI().setVisible(true);
+				dispose();
 			}
 		});
 		reportButton.setForeground(Color.WHITE);
 		reportButton.setFont(new Font("微軟正黑體", Font.BOLD, 16));
 		reportButton.setBackground(new Color(128, 64, 0));
-		reportButton.setBounds(71, 316, 100, 37);
+		reportButton.setBounds(71, 301, 100, 37);
 		contentPane.add(reportButton);
 	}
 }

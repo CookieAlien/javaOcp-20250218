@@ -209,7 +209,14 @@ public class ManageProductUI extends JFrame {
 			new String[] {
 				"\u7522\u54C1\u7DE8\u865F", "\u7522\u54C1\u540D\u7A31", "\u50F9\u683C", "\u72C0\u614B", "\u985E\u5225"
 			}
-		));
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		table.getColumnModel().getColumn(0).setPreferredWidth(65);
 		table.getColumnModel().getColumn(1).setPreferredWidth(140);
 		table.getColumnModel().getColumn(2).setPreferredWidth(60);
