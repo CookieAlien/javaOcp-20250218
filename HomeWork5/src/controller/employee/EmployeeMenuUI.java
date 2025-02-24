@@ -77,6 +77,12 @@ public class EmployeeMenuUI extends JFrame {
 		contentPane.add(manageEmpButton);
 		
 		JButton porderButton = new JButton("訂單管理");
+		porderButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ManageOrderUI().setVisible(true);
+				dispose();
+			}
+		});
 		porderButton.setForeground(Color.WHITE);
 		porderButton.setFont(new Font("微軟正黑體", Font.BOLD, 16));
 		porderButton.setBackground(new Color(0, 0, 0));

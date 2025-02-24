@@ -1,4 +1,4 @@
-package controller.customer;
+package controller.employee;
 
 import java.awt.EventQueue;
 
@@ -25,25 +25,37 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import com.mysql.cj.xdevapi.Table;
+
+import dao.impl.ProductDaoImpl;
 import model.CartItem;
+import model.Customer;
+import model.Employee;
+import model.Porder;
 import model.Product;
+import service.impl.PorderServiceImpl;
 import service.impl.ProductServiceImpl;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ShopFloor4UI extends JFrame {
+public class AddPorderUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable shopTable;
 	private JTable CartTable;
 	private static ProductServiceImpl productServiceImpl = new ProductServiceImpl();
+	private static PorderServiceImpl porderServiceImpl = new PorderServiceImpl();
+	private Customer customer = (Customer) FileTool.load("Customer.txt");
+	private Employee operator = (Employee) FileTool.load("Employee.txt");
 	private List<Product> products;
 	private List<CartItem> shoppingList;
 	private JLabel sumLabel;
+	private int sum;
 
 	/**
 	 * Launch the application.
@@ -52,7 +64,7 @@ public class ShopFloor4UI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ShopFloor4UI frame = new ShopFloor4UI();
+					AddPorderUI frame = new AddPorderUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -64,10 +76,10 @@ public class ShopFloor4UI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ShopFloor4UI() {
+	public AddPorderUI() {
 		setTitle("敗家家居");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 50, 700, 750);
+		setBounds(100, 50, 700, 760);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -78,27 +90,9 @@ public class ShopFloor4UI extends JFrame {
 		titlePanel.setBounds(10, 10, 666, 66);
 		contentPane.add(titlePanel);
 		
-		JPanel floorInfoPanel = new JPanel();
-		floorInfoPanel.setBackground(new Color(255, 255, 255));
-		floorInfoPanel.setBounds(10, 86, 666, 104);
-		contentPane.add(floorInfoPanel);
-		floorInfoPanel.setLayout(null);
-		
-		JLabel floorTitleLabel = new JLabel("歡迎來到4樓居家展示間！");
-		floorTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		floorTitleLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 24));
-		floorTitleLabel.setBounds(143, 10, 403, 30);
-		floorInfoPanel.add(floorTitleLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("除了給你居家布置的靈感，還有兒童最愛的玩具和布偶！");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
-		lblNewLabel_1.setBounds(41, 50, 596, 30);
-		floorInfoPanel.add(lblNewLabel_1);
-		
 		JPanel shopPanel = new JPanel();
 		shopPanel.setBackground(new Color(255, 255, 255));
-		shopPanel.setBounds(10, 200, 340, 444);
+		shopPanel.setBounds(10, 210, 340, 444);
 		contentPane.add(shopPanel);
 		shopPanel.setLayout(null);
 		
@@ -176,11 +170,7 @@ public class ShopFloor4UI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int row = shopTable.getSelectedRow();
 				if ((int)spinner.getValue()>0 && row>=0) {
-					if (shopTable.getModel().getValueAt(row, 3).equals("缺貨中")) {
-						JOptionPane.showMessageDialog(contentPane, "很抱歉，此商品缺貨中！");
-					}else {
-						addToCart((int)spinner.getValue(), row);
-					}
+					addToCart((int)spinner.getValue(), row);
 				}
 			}
 		});
@@ -192,7 +182,7 @@ public class ShopFloor4UI extends JFrame {
 		
 		JPanel cartPanel = new JPanel();
 		cartPanel.setBackground(new Color(255, 255, 0));
-		cartPanel.setBounds(360, 200, 316, 444);
+		cartPanel.setBounds(360, 210, 316, 444);
 		contentPane.add(cartPanel);
 		cartPanel.setLayout(null);
 		
@@ -247,36 +237,85 @@ public class ShopFloor4UI extends JFrame {
 		sumLabel.setBounds(68, 329, 186, 30);
 		cartPanel.add(sumLabel);
 		
-		JButton returnButton = new JButton("返回");
+		JButton returnButton = new JButton("取消");
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int option = JOptionPane.showConfirmDialog(contentPane, "確定要離開商店嗎?購物車將被清空！", "資訊", JOptionPane.YES_NO_OPTION);
+				int option = JOptionPane.showConfirmDialog(contentPane, "確定要取消訂單嗎？訂單將不會儲存！", "資訊", JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.YES_OPTION) {
-					FileTool.save(null, "ShoppingList.txt");
-					new CustomerMenuUI().setVisible(true);
-					dispose();
+					
 				}
 			}
 		});
 		returnButton.setForeground(new Color(255, 255, 255));
 		returnButton.setBackground(new Color(128, 64, 64));
 		returnButton.setFont(new Font("微軟正黑體", Font.PLAIN, 24));
-		returnButton.setBounds(108, 654, 124, 49);
+		returnButton.setBounds(108, 664, 124, 49);
 		contentPane.add(returnButton);
 		
-		JButton nextButton = new JButton("下樓");
-		nextButton.addActionListener(new ActionListener() {
+		JButton finishButton = new JButton("完成");
+		finishButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FileTool.save(shoppingList, "ShoppingList.txt");
-				new ShopFloor3UI().setVisible(true);
-				dispose();
+				if (shoppingList.isEmpty()) {
+					JOptionPane.showMessageDialog(contentPane, "購物車為空！", "警告", JOptionPane.WARNING_MESSAGE);
+				}else {
+					addOrder();
+				}
 			}
 		});
-		nextButton.setForeground(Color.WHITE);
-		nextButton.setFont(new Font("微軟正黑體", Font.PLAIN, 24));
-		nextButton.setBackground(new Color(0, 0, 200));
-		nextButton.setBounds(464, 654, 124, 49);
-		contentPane.add(nextButton);
+		finishButton.setForeground(Color.WHITE);
+		finishButton.setFont(new Font("微軟正黑體", Font.PLAIN, 24));
+		finishButton.setBackground(new Color(0, 0, 200));
+		finishButton.setBounds(462, 664, 124, 49);
+		contentPane.add(finishButton);
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		panel.setBackground(new Color(0, 128, 255));
+		panel.setBounds(10, 86, 666, 55);
+		contentPane.add(panel);
+		
+		JLabel titleLabel = new JLabel("新增訂單");
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setFont(new Font("微軟正黑體", Font.BOLD, 20));
+		titleLabel.setBounds(10, 10, 137, 35);
+		panel.add(titleLabel);
+		
+		JLabel opLabel = new JLabel();
+		opLabel.setText("操作員："+operator.getName());
+		opLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		opLabel.setForeground(Color.WHITE);
+		opLabel.setFont(new Font("微軟正黑體", Font.BOLD, 20));
+		opLabel.setBounds(245, 10, 201, 35);
+		panel.add(opLabel);
+		
+		JButton returnButton_1 = new JButton("返回");
+		returnButton_1.setFont(new Font("微軟正黑體", Font.BOLD, 18));
+		returnButton_1.setBackground(Color.WHITE);
+		returnButton_1.setBounds(516, 10, 105, 35);
+		panel.add(returnButton_1);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(255, 255, 255));
+		panel_1.setBounds(10, 151, 666, 49);
+		contentPane.add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel cusLabel = new JLabel();
+		cusLabel.setText("顧客姓名："+customer.getName());
+		cusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		cusLabel.setForeground(new Color(0, 0, 0));
+		cusLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		cusLabel.setBounds(10, 10, 328, 29);
+		panel_1.add(cusLabel);
+		
+		JLabel noteLabel = new JLabel();
+		noteLabel.setText("備註：員工可以將缺貨中商品加入購物車");
+		noteLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		noteLabel.setForeground(Color.BLACK);
+		noteLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 16));
+		noteLabel.setBounds(338, 10, 318, 29);
+		panel_1.add(noteLabel);
 		
 		populateShop();
 		shoppingList = (List<CartItem>) FileTool.load("ShoppingList.txt");
@@ -293,7 +332,7 @@ public class ShopFloor4UI extends JFrame {
 		statusMap.put("sale", "特價中");
 		statusMap.put("new_lowest", "再創新低");
 		statusMap.put("out_of_stock", "缺貨中");
-		products = productServiceImpl.getProductsByCategory("children");
+		products = productServiceImpl.getAllProducts();
 		DefaultTableModel model = (DefaultTableModel) shopTable.getModel();
 		model.setRowCount(0);
 		for (Product product : products) {
@@ -319,7 +358,7 @@ public class ShopFloor4UI extends JFrame {
 	private void displayCart() {
 		DefaultTableModel model = (DefaultTableModel) CartTable.getModel();
 		model.setRowCount(0);
-		int sum = 0;
+		sum = 0;
 		for (CartItem item : shoppingList) {
 			model.addRow(new Object[] {item.getProductno(),item.getProductname(),item.getAmount(),item.getSum()});
 			sum += item.getSum();
@@ -329,5 +368,17 @@ public class ShopFloor4UI extends JFrame {
 	private void removefromCart(int row) {
 		shoppingList.remove(row);
 		displayCart();
+	}
+	private void addOrder() {
+		Porder porder = new Porder();
+		String orderno = porderServiceImpl.generateOrderno();
+		porder.setPorderno(orderno);
+		porder.setCustomerno(customer.getCustomerno());
+		porder.setEmployeeno(operator.getEmployeeno());
+		porder.setTotalPrice(sum);
+		porderServiceImpl.createOrder(porder, shoppingList);
+		JOptionPane.showMessageDialog(contentPane, "新增訂單成功！訂單編號:"+orderno);
+		new ManageOrderUI().setVisible(true);
+		dispose();
 	}
 }

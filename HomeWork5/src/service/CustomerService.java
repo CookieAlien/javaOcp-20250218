@@ -9,6 +9,7 @@ public interface CustomerService {
 	
 	List<Customer> getAllCustomers();
 	Customer login(String username, String password);
+	Customer getCustomerByUsername(String username);
 	boolean isUsernameTaken(String username);
 	String generateCustomerno();
 	

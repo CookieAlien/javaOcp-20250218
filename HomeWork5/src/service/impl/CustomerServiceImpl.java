@@ -66,4 +66,14 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerDaoImpl.selectAll();
 	}
 
+	@Override
+	public Customer getCustomerByUsername(String username) {
+		Customer customer = null;
+		List<Customer> list = customerDaoImpl.selectByUsername(username);
+		if (list.size()>0) {
+			customer = list.get(0);
+		}
+		return customer;
+	}
+
 }
