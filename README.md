@@ -86,4 +86,4 @@ src/
     └── TitlePanel 標題UI元件
 ```
 # 流程圖
-![FlowChart](image/flowchart.png)
+![Flow Chart](image/FlowChart.png)
