@@ -135,4 +135,17 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 
 	}
 
+	@Override
+	public void delete(String orderno) {
+		String sql= "delete from orderdetails where porderno=?";
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, orderno);
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

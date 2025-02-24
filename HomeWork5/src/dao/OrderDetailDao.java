@@ -15,4 +15,5 @@ public interface OrderDetailDao {
 	void update(OrderItem item);
 	//delete
 	void delete(String orderno, String productno);
+	void delete(String orderno);
 }

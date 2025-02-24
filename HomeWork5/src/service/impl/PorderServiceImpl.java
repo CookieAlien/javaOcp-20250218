@@ -1,5 +1,6 @@
 package service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.impl.OrderDetailDaoImpl;
@@ -47,12 +48,36 @@ public class PorderServiceImpl implements PorderService {
 		return orderDetailDaoImpl.selectByOrder(porderno);
 	}
 
+
+	@Override
+	public List<CartItem> getItemsToCart(String porderno) {
+		List<CartItem> shoppingList = new ArrayList<CartItem>();
+		List<OrderItem> orderItems = getOrderItems(porderno);
+		for (OrderItem orderItem : orderItems) {
+			CartItem cartItem = new CartItem(orderItem.getProductno(), orderItem.getProductname(), orderItem.getSum()/orderItem.getAmount() ,orderItem.getAmount());
+			shoppingList.add(cartItem);
+		}
+		return shoppingList;
+	}
+	
 	@Override
 	public void updateOrder(Porder porder) {
 		if (porder.getTotalPrice()>0) {
 			porderDaoImpl.update(porder);
 		}
 
+	}
+
+	@Override
+	public void updateOrder(Porder porder, List<CartItem> items) {
+		if (porder.getTotalPrice()>0) {
+			porderDaoImpl.update(porder);
+			orderDetailDaoImpl.delete(porder.getPorderno());
+			for (CartItem cartItem : items) {
+				OrderItem orderItem = new OrderItem(porder.getPorderno(), cartItem.getProductno(),cartItem.getProductname(), cartItem.getAmount(),cartItem.getSum());
+				orderDetailDaoImpl.add(orderItem);
+			}
+		}
 	}
 
 	@Override
@@ -77,5 +102,16 @@ public class PorderServiceImpl implements PorderService {
 			return "o001";
 		}
 	}
+
+	@Override
+	public Porder getPorderByPorderno(String porderno) {
+		Porder porder = null;
+		List<Porder> list = porderDaoImpl.selectByPorderno(porderno);
+		if (list.size()>0) {
+			porder = list.get(0);
+		}
+		return porder;
+	}
+
 
 }

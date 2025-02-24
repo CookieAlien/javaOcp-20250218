@@ -155,7 +155,14 @@ public class ManageOrderUI extends JFrame {
 			new String[] {
 				"\u8A02\u55AE\u7DE8\u865F", "\u9867\u5BA2\u7DE8\u865F", "\u54E1\u5DE5\u7DE8\u865F", "\u7E3D\u50F9", "\u6700\u5F8C\u4FEE\u6539\u6642\u9593"
 			}
-		));
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		table.getColumnModel().getColumn(0).setPreferredWidth(60);
 		table.getColumnModel().getColumn(0).setMinWidth(10);
 		table.getColumnModel().getColumn(1).setPreferredWidth(60);
@@ -307,6 +314,13 @@ public class ManageOrderUI extends JFrame {
 		panel_3.add(updateinfoLabel_3);
 		
 		updateButton = new JButton("修改訂單");
+		updateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FileTool.save(currentPorder, "Porder.txt");
+				new updatePorderUI().setVisible(true);
+				dispose();
+			}
+		});
 		updateButton.setEnabled(false);
 		updateButton.setForeground(Color.WHITE);
 		updateButton.setFont(new Font("微軟正黑體", Font.PLAIN, 16));

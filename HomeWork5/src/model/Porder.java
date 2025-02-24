@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Porder {
+public class Porder implements Serializable{
 	private int id;
 	private String porderno;
 	private String customerno;

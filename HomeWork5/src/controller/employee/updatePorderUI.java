@@ -42,7 +42,7 @@ import service.impl.ProductServiceImpl;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class AddPorderUI extends JFrame {
+public class updatePorderUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -52,8 +52,9 @@ public class AddPorderUI extends JFrame {
 	private static PorderServiceImpl porderServiceImpl = new PorderServiceImpl();
 	private Customer customer = (Customer) FileTool.load("Customer.txt");
 	private Employee operator = (Employee) FileTool.load("Employee.txt");
+	private Porder porder = (Porder) FileTool.load("porder.txt");
 	private List<Product> products;
-	private List<CartItem> shoppingList = new ArrayList<CartItem>();
+	private List<CartItem> shoppingList = porderServiceImpl.getItemsToCart(porder.getPorderno());
 	private JLabel sumLabel;
 	private int sum;
 
@@ -64,7 +65,7 @@ public class AddPorderUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddPorderUI frame = new AddPorderUI();
+					updatePorderUI frame = new updatePorderUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -76,7 +77,7 @@ public class AddPorderUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddPorderUI() {
+	public updatePorderUI() {
 		setTitle("敗家家居");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 50, 700, 760);
@@ -109,7 +110,7 @@ public class AddPorderUI extends JFrame {
 		shopPanel.add(spinner);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 50, 300, 280);
+		scrollPane.setBounds(20, 50, 300, 287);
 		shopPanel.add(scrollPane);
 		
 		shopTable = new JTable() {
@@ -266,7 +267,7 @@ public class AddPorderUI extends JFrame {
 				if (shoppingList.isEmpty()) {
 					JOptionPane.showMessageDialog(contentPane, "購物車為空！", "警告", JOptionPane.WARNING_MESSAGE);
 				}else {
-					addOrder();
+					updateOrder();
 				}
 			}
 		});
@@ -310,18 +311,31 @@ public class AddPorderUI extends JFrame {
 		panel_1.setLayout(null);
 		
 		JLabel cusLabel = new JLabel();
-		cusLabel.setText("顧客姓名："+customer.getName());
+		cusLabel.setText("顧客姓名："+customer.getName()+"  訂單編號："+porder.getPorderno());
 		cusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		cusLabel.setForeground(new Color(0, 0, 0));
 		cusLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
-		cusLabel.setBounds(10, 10, 328, 29);
+		cusLabel.setBounds(10, 10, 646, 29);
 		panel_1.add(cusLabel);
 		
 		populateShop();
+		if (shoppingList==null) {
+			shoppingList = new ArrayList<CartItem>();
+		}
 		displayCart();
 	}
 	
 	
+	protected void updateOrder() {
+		porder.setEmployeeno(operator.getEmployeeno());
+		porder.setTotalPrice(sum);
+		porderServiceImpl.updateOrder(porder, shoppingList);
+		JOptionPane.showMessageDialog(contentPane, "更新訂單成功！");
+		new ManageOrderUI().setVisible(true);
+		dispose();
+		
+	}
+
 	private void populateShop() {
 		Map<String, String> statusMap = new HashMap<String, String>();
 		statusMap.put("normal", "");
@@ -364,17 +378,5 @@ public class AddPorderUI extends JFrame {
 	private void removefromCart(int row) {
 		shoppingList.remove(row);
 		displayCart();
-	}
-	private void addOrder() {
-		Porder porder = new Porder();
-		String orderno = porderServiceImpl.generateOrderno();
-		porder.setPorderno(orderno);
-		porder.setCustomerno(customer.getCustomerno());
-		porder.setEmployeeno(operator.getEmployeeno());
-		porder.setTotalPrice(sum);
-		porderServiceImpl.createOrder(porder, shoppingList);
-		JOptionPane.showMessageDialog(contentPane, "新增訂單成功！訂單編號:"+orderno);
-		new ManageOrderUI().setVisible(true);
-		dispose();
 	}
 }

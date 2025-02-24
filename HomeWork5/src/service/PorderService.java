@@ -16,11 +16,14 @@ public interface PorderService {
 	List<Porder> getAllPorders();
 	List<Porder> getPordersByCustomer(String customerno);
 	List<Porder> getPordersByEmployee(String Employeeno);
+	Porder getPorderByPorderno(String porderno);
 	List<OrderItem> getOrderItems(String porderno);
+	List<CartItem> getItemsToCart(String porderno);
 	String generateOrderno();
 	
 	//update
 	void updateOrder(Porder porder);
+	void updateOrder(Porder porder,List<CartItem> items);
 	void updateOrderitem(OrderItem item);
 	//delete
 	void deleteOrder(String porderno);

@@ -143,8 +143,8 @@ public class PorderDaoImpl implements PorderDao {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, order.getCustomerno());
 			preparedStatement.setString(2, order.getEmployeeno());
-			preparedStatement.setString(3, order.getPorderno());
-			preparedStatement.setInt(4, order.getTotalPrice());
+			preparedStatement.setString(4, order.getPorderno());
+			preparedStatement.setInt(3, order.getTotalPrice());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
