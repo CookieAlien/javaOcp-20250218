@@ -19,6 +19,7 @@
 ### 3. 執行程式
 - (Windows) 雙擊FurnitureShop.jar即可執行
 - 或開啟終端，移動到FurnitureShop.jar所在資料夾，並輸入‵java -jar FurnitureShop.jar`
+- 註：在執行中會於jar所在資料夾產生數個文字檔以暫時儲存資料用
 # 目錄結構
 ```
 src/
