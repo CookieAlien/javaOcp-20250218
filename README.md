@@ -84,3 +84,5 @@ src/
     ├── Helper 工具(如驗證輸入格式)
     └── TitlePanel 標題UI元件
 ```
+# 流程圖
+![FlowChart](image/flowchart.png)
