@@ -35,7 +35,7 @@ CREATE TABLE `customer` (
   `phone` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `customerno_UNIQUE` (`customerno`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'c001','cookie123','Biscuit123','Cookie','dough','cookie@cookie.com','0900112233'),(2,'c002','rick88','Rick88','Rick Astley','London, Great Britain','never@gonnagive.you','0988088088'),(3,'c003','chessbattle','Cba123','Chess Battle','E4, chess road','cba@cba.com','0932132132');
+INSERT INTO `customer` VALUES (1,'c001','cookie123','Biscuit123','Cookie','dough','cookie@cookie.com','0900112233'),(2,'c002','rick88','Rick88','Rick Astley','London, Great Britain','never@gonnagive.you','0988088088'),(3,'c003','chessbattle','Cba123','Chess Battle','E4, chess road','cba@cba.com','0932132132'),(4,'c004','Tomorin','T0m0r1n','Tomorin','Xpark, Taoyuan','tomorin@xpark.com','0903321654');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-21 16:21:26
+-- Dump completed on 2025-02-25 11:38:09

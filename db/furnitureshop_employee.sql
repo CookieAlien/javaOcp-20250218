@@ -35,7 +35,7 @@ CREATE TABLE `employee` (
   `phone` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `employeeno_UNIQUE` (`employeeno`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (1,'e001','admin','admin','system','sys','sys@moneymokia.com','0800000857'),(3,'e002','cookie','cookie','Cookie','old taipei','cookie@moneymokia.com','0900111222');
+INSERT INTO `employee` VALUES (1,'e001','admin','admin','system','sys','sys@moneymokia.com','0800000857'),(3,'e002','cookie','cookie','Cookie','old taipei','cookie@moneymokia.com','0900111222'),(4,'e003','biscuit','biscuit','biscuit','oven','biscuit@moneymokia.com','0928282828'),(5,'e004','beast','beast','野獸先輩','下北澤','beast@moneymokia.com','0900114514');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-21 16:21:26
+-- Dump completed on 2025-02-25 11:38:08

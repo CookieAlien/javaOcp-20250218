@@ -33,7 +33,7 @@ CREATE TABLE `product` (
   `status` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `productno_UNIQUE` (`productno`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'p001','blahaj 鯊魚玩偶','699','children','normal'),(2,'p002','jordkastanj 靠枕','69','decoration','sale'),(3,'p003','friheten 轉角沙發床','12990','furniture','new_lowest'),(4,'p004','huvudroll 肉丸','399','food','normal'),(5,'p005','djungelskog 棕熊玩偶','899','children','out_of_stock');
+INSERT INTO `product` VALUES (1,'p001','blahaj 鯊魚玩偶','699','children','normal'),(2,'p002','jordkastanj 靠枕','69','decoration','sale'),(3,'p003','friheten 轉角沙發床','12990','furniture','new_lowest'),(4,'p004','huvudroll 肉丸','399','food','normal'),(5,'p005','djungelskog 棕熊玩偶','899','children','out_of_stock'),(6,'p006','malm 雙人床框','7999','furniture','normal'),(7,'p007','samla 覆蓋收納盒','579','decoration','sale'),(8,'p008','aftonsparv 外星人','299','children','normal'),(9,'p009','kramig 貓熊','249','children','sale'),(10,'p010','Beloning白巧克力','89','food','out_of_stock'),(11,'p011','festligt 洋芋片','49','food','normal'),(12,'p012','pepprig 臉盆','199','decoration','new_lowest'),(13,'p013','Sunnersta 簡易廚房','4999','furniture','sale');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-21 16:21:26
+-- Dump completed on 2025-02-25 11:38:09

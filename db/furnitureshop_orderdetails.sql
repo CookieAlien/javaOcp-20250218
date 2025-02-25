@@ -34,7 +34,7 @@ CREATE TABLE `orderdetails` (
   PRIMARY KEY (`orderdetailid`),
   KEY `detailsporder` (`porderno`),
   CONSTRAINT `detailsporder` FOREIGN KEY (`porderno`) REFERENCES `porder` (`porderno`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `orderdetails` (
 
 LOCK TABLES `orderdetails` WRITE;
 /*!40000 ALTER TABLE `orderdetails` DISABLE KEYS */;
-INSERT INTO `orderdetails` VALUES (1,'o001','p001',NULL,2,1398),(63,'o002','p001','blahaj 鯊魚玩偶',2,1398),(64,'o002','p002','jordkastanj 靠枕',2,138),(65,'o002','p004','huvudroll 肉丸',3,1197);
+INSERT INTO `orderdetails` VALUES (63,'o002','p001','blahaj 鯊魚玩偶',2,1398),(64,'o002','p002','jordkastanj 靠枕',2,138),(65,'o002','p004','huvudroll 肉丸',3,1197),(77,'o003','p003','friheten 轉角沙發床',3,38970),(78,'o003','p001','blahaj 鯊魚玩偶',17,11883),(79,'o001','p001','blahaj 鯊魚玩偶',2,1398),(82,'o004','p006','malm 雙人床框',2,15998),(83,'o004','p007','samla 覆蓋收納盒',1,579),(92,'o009','p001','blahaj 鯊魚玩偶',2,1398),(94,'o010','p004','huvudroll 肉丸',1,399),(95,'o010','p007','samla 覆蓋收納盒',1,579),(96,'o011','p001','blahaj 鯊魚玩偶',2,1398),(97,'o011','p007','samla 覆蓋收納盒',2,1158),(98,'o011','p004','huvudroll 肉丸',1,399),(99,'o012','p004','huvudroll 肉丸',2,798),(100,'o012','p005','djungelskog 棕熊玩偶',3,2697),(101,'o006','p001','blahaj 鯊魚玩偶',2,1398),(102,'o006','p007','samla 覆蓋收納盒',2,1158),(103,'o006','p006','malm 雙人床框',1,7999);
 /*!40000 ALTER TABLE `orderdetails` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-21 16:21:26
+-- Dump completed on 2025-02-25 11:38:09
