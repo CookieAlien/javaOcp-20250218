@@ -25,15 +25,11 @@ import model.CartItem;
 
 public class ExcelTool {
 	public static final double moneyPerPoint = 300.0;
-	public static String WriteCartToExcel(File excelFile, String customername,List<CartItem> cartItems, int sum) {
+	public static String WriteCartToExcel(String customername,List<CartItem> cartItems, int sum) {
 		try {
 			Workbook workbook;
-			if (excelFile==null) {
-				workbook = new XSSFWorkbook();
-			}else {
-				workbook = new XSSFWorkbook(excelFile);
-			}
-			Sheet sheet = workbook.createSheet("明細 "+LocalDateTime.now());
+			workbook = new XSSFWorkbook();
+			Sheet sheet = workbook.createSheet("明細");
 			
 			Row nameRow = sheet.createRow(0);
 			CellStyle nameCellStyle = workbook.createCellStyle();
@@ -99,22 +95,13 @@ public class ExcelTool {
 			sheet.setColumnWidth(3, 8*256);
 			sheet.setColumnWidth(4, 16*256);
 			FileOutputStream fos;
-			if (excelFile == null) {
-				File newFile = new File("output.xlsx");
-				fos = new FileOutputStream(newFile);
-				workbook.write(fos);
-				workbook.close();
-				fos.close();
-				return newFile.getAbsolutePath();
-			}else {
-				fos = new FileOutputStream(excelFile.getAbsolutePath()+".new");
-				workbook.write(fos);
-				workbook.close();
-				fos.close();
-				Files.move(Paths.get(excelFile.getAbsolutePath()+".new"), Paths.get(excelFile.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
-				return excelFile.getAbsolutePath();
-			}
-		} catch (InvalidFormatException | IOException e) {
+			File newFile = new File("output.xlsx");
+			fos = new FileOutputStream(newFile);
+			workbook.write(fos);
+			workbook.close();
+			fos.close();
+			return newFile.getAbsolutePath();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -135,7 +122,7 @@ public class ExcelTool {
 					try {
 						double money = moneyCell.getNumericCellValue();
 						if (money>= sum) {
-							double point = money / moneyPerPoint;
+							double point = sum / moneyPerPoint;
 							row.createCell(2).setCellValue(point);
 							FileOutputStream fos = new FileOutputStream(excelFile.getAbsolutePath()+".new");
 							workbook.write(fos);

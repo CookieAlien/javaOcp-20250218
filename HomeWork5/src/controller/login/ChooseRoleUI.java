@@ -6,13 +6,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import util.DBConnection;
 import util.TitlePanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.awt.event.ActionEvent;
 
 public class ChooseRoleUI extends JFrame {
@@ -84,5 +88,10 @@ public class ChooseRoleUI extends JFrame {
 		employeeButton.setBackground(new Color(0, 0, 0));
 		employeeButton.setBounds(260, 189, 106, 40);
 		contentPane.add(employeeButton);
+		
+		Connection connection = DBConnection.getConnection();
+		if (connection == null) {
+			JOptionPane.showMessageDialog(contentPane, "無法與資料庫連結！", "錯誤", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }

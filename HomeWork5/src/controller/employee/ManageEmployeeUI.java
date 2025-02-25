@@ -144,6 +144,7 @@ public class ManageEmployeeUI extends JFrame {
 		mainPanel.add(scrollPane);
 		
 		table = new JTable();
+		table.setRowHeight(24);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

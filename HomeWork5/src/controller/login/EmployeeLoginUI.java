@@ -53,6 +53,7 @@ public class EmployeeLoginUI extends JFrame {
 	 * Create the frame.
 	 */
 	public EmployeeLoginUI() {
+		setTitle("敗家家居");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 400);
 		contentPane = new JPanel();
@@ -89,6 +90,7 @@ public class EmployeeLoginUI extends JFrame {
 		contentPane.add(passwordLabel);
 		
 		passwordField = new JPasswordField();
+		passwordField.setEchoChar('*');
 		passwordField.setColumns(10);
 		passwordField.setBounds(155, 215, 138, 31);
 		contentPane.add(passwordField);

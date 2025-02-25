@@ -62,6 +62,7 @@ public class CustomerRegisterUI extends JFrame {
 	 * Create the frame.
 	 */
 	public CustomerRegisterUI() {
+		setTitle("敗家家居");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 700);
 		contentPane = new JPanel();
@@ -337,6 +338,7 @@ public class CustomerRegisterUI extends JFrame {
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new CustomerLoginUI().setVisible(true);
+				dispose();
 			}
 		});
 		returnButton.setForeground(Color.WHITE);

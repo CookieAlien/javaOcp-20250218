@@ -64,6 +64,7 @@ public class NewEmployeeUI extends JFrame {
 	 * Create the frame.
 	 */
 	public NewEmployeeUI() {
+		setTitle("敗家家居");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 650);
 		contentPane = new JPanel();

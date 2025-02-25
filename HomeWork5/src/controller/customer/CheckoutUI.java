@@ -362,7 +362,7 @@ public class CheckoutUI extends JFrame {
 		finishButton.setEnabled(true);
 	}
 	private void outputExcel() {
-		String path = ExcelTool.WriteCartToExcel(excelfile, customer.getName(), shoppingList, sum);
+		String path = ExcelTool.WriteCartToExcel(customer.getName(), shoppingList, sum);
 		if (path!=null) {
 			JOptionPane.showMessageDialog(contentPane, "明細已輸出至 "+path);
 		}

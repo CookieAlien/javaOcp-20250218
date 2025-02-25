@@ -86,6 +86,7 @@ public class ManageProductUI extends JFrame {
 	 * Create the frame.
 	 */
 	public ManageProductUI() {
+		setTitle("敗家家居商品管理");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 50, 750, 700);
 		contentPane = new JPanel();

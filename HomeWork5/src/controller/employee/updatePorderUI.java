@@ -50,7 +50,6 @@ public class updatePorderUI extends JFrame {
 	private JTable CartTable;
 	private static ProductServiceImpl productServiceImpl = new ProductServiceImpl();
 	private static PorderServiceImpl porderServiceImpl = new PorderServiceImpl();
-	private Customer customer = (Customer) FileTool.load("Customer.txt");
 	private Employee operator = (Employee) FileTool.load("Employee.txt");
 	private Porder porder = (Porder) FileTool.load("porder.txt");
 	private List<Product> products;
@@ -249,9 +248,10 @@ public class updatePorderUI extends JFrame {
 		JButton returnButton = new JButton("取消");
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int option = JOptionPane.showConfirmDialog(contentPane, "確定要取消訂單嗎？訂單將不會儲存！", "資訊", JOptionPane.YES_NO_OPTION);
+				int option = JOptionPane.showConfirmDialog(contentPane, "確定要取消修改訂單嗎？訂單將不會儲存！", "資訊", JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.YES_OPTION) {
-					
+					new ManageOrderUI().setVisible(true);
+					dispose();
 				}
 			}
 		});
@@ -283,7 +283,7 @@ public class updatePorderUI extends JFrame {
 		panel.setBounds(10, 86, 666, 55);
 		contentPane.add(panel);
 		
-		JLabel titleLabel = new JLabel("新增訂單");
+		JLabel titleLabel = new JLabel("修改訂單");
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setFont(new Font("微軟正黑體", Font.BOLD, 20));
@@ -311,7 +311,7 @@ public class updatePorderUI extends JFrame {
 		panel_1.setLayout(null);
 		
 		JLabel cusLabel = new JLabel();
-		cusLabel.setText("顧客姓名："+customer.getName()+"  訂單編號："+porder.getPorderno());
+		cusLabel.setText("訂單編號："+porder.getPorderno());
 		cusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		cusLabel.setForeground(new Color(0, 0, 0));
 		cusLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 20));

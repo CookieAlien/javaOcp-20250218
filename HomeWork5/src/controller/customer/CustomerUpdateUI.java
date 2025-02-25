@@ -63,6 +63,7 @@ public class CustomerUpdateUI extends JFrame {
 	 * Create the frame.
 	 */
 	public CustomerUpdateUI() {
+		setTitle("敗家家居");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 700);
 		contentPane = new JPanel();
@@ -75,10 +76,10 @@ public class CustomerUpdateUI extends JFrame {
 		titlePanel.setBounds(10, 10, 416, 66);
 		contentPane.add(titlePanel);
 		
-		JLabel titleLabel = new JLabel("客戶註冊");
+		JLabel titleLabel = new JLabel("更新個人資訊");
 		titleLabel.setFont(new Font("微軟正黑體", Font.PLAIN, 24));
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleLabel.setBounds(159, 86, 117, 36);
+		titleLabel.setBounds(10, 86, 416, 36);
 		contentPane.add(titleLabel);
 		
 		JLabel usernameLabel = new JLabel("舊密碼：");
@@ -345,6 +346,7 @@ public class CustomerUpdateUI extends JFrame {
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new CustomerMenuUI().setVisible(true);
+				dispose();
 			}
 		});
 		returnButton.setForeground(Color.WHITE);

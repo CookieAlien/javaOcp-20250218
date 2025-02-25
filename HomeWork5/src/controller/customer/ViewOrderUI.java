@@ -112,12 +112,19 @@ public class ViewOrderUI extends JFrame {
 			new String[] {
 				"\u8A02\u55AE\u7DE8\u865F", "\u7BA1\u7406\u54E1\u7DE8\u865F", "\u7E3D\u91D1\u984D", "\u6700\u5F8C\u4FEE\u6539\u6642\u9593"
 			}
-		));
-		orderTable.setRowHeight(20);
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		orderTable.getColumnModel().getColumn(0).setPreferredWidth(55);
 		orderTable.getColumnModel().getColumn(1).setPreferredWidth(65);
 		orderTable.getColumnModel().getColumn(2).setPreferredWidth(55);
 		orderTable.getColumnModel().getColumn(3).setPreferredWidth(130);
+		orderTable.setRowHeight(20);
 		orderTable.setFont(new Font("微軟正黑體", Font.PLAIN, 13));
 		
 		JPanel detailPanel = new JPanel();
@@ -146,8 +153,14 @@ public class ViewOrderUI extends JFrame {
 			new String[] {
 				"\u5546\u54C1\u7DE8\u865F", "\u5546\u54C1\u540D\u7A31", "\u6578\u91CF", "\u5C0F\u8A08"
 			}
-		));
-		detailTable.setRowHeight(20);
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		detailTable.getColumnModel().getColumn(0).setPreferredWidth(60);
 		detailTable.getColumnModel().getColumn(1).setPreferredWidth(135);
 		detailTable.getColumnModel().getColumn(1).setMinWidth(25);
@@ -155,6 +168,7 @@ public class ViewOrderUI extends JFrame {
 		detailTable.getColumnModel().getColumn(2).setMinWidth(7);
 		detailTable.getColumnModel().getColumn(3).setPreferredWidth(60);
 		detailTable.getColumnModel().getColumn(3).setMinWidth(10);
+		detailTable.setRowHeight(20);
 		detailTable.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
 		
 		JButton printButton = new JButton("列印");

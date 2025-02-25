@@ -268,9 +268,13 @@ public class ShopFloor1UI extends JFrame {
 		JButton nextButton = new JButton("結帳");
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FileTool.save(shoppingList, "ShoppingList.txt");
-				new CheckoutUI().setVisible(true);
-				dispose();
+				if (shoppingList.isEmpty()) {
+					JOptionPane.showMessageDialog(contentPane, "購物車為空，不能結帳！", "警告", JOptionPane.WARNING_MESSAGE);
+				} else {
+					FileTool.save(shoppingList, "ShoppingList.txt");
+					new CheckoutUI().setVisible(true);
+					dispose();
+				}
 			}
 		});
 		nextButton.setForeground(Color.WHITE);

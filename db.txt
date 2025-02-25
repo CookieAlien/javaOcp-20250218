@@ -1,0 +1,4 @@
+//如有需要請自行修改
+url=jdbc:mysql://localhost:3306/furnitureshop
+user=root
+password=1234
