@@ -12,6 +12,9 @@
 ### 1. 下載所需檔案
 本頁面右上方Code按鈕，選擇 Download ZIP 下載所有檔案
 若無需原始碼可手動下載 FurnitureShop.jar、db.txt、與db資料夾內檔案
+其餘檔案：
+Excel Pay.xlsx 讀取excel檔用的範例檔
+家具店管理系統.pptx 程式詳細介紹投影片
 ### 2. 準備環境
 - 確認電腦環境已安裝Java 11與MySQL
 - 開啟MySQL Workbench並連接到MySQL伺服器
